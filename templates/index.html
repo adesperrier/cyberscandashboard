@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CyberScan Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4">
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">🔐 CyberScan Dashboard</span>
+      </div>
+    </nav>
+
+    <main class="container pb-4">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h2 class="h5 mb-3">🔍 Lancer un scan</h2>
+
+              <div class="mb-3">
+                <label class="form-label" for="arp_select">📡 Voisins ARP détectés</label>
+                <select class="form-select" id="arp_select">
+                  <option value="">-- Charger depuis le réseau local --</option>
+                </select>
+                <button class="btn btn-sm btn-outline-secondary mt-2 w-100" id="load_arp_btn">
+                  ↻ Actualiser ARP
+                </button>
+              </div>
+
+              <form method="post" novalidate>
+                <label class="form-label" for="target">IP, domaine ou plage réseau (CIDR)</label>
+                <input
+                  class="form-control"
+                  id="target"
+                  name="target"
+                  placeholder="ex: 192.168.1.10, 10.0.0.0/24, example.com"
+                  required
+                >
+
+                <label class="form-label mt-3" for="scan_preset">Mode de scan</label>
+                <select class="form-select" id="scan_preset" name="scan_preset">
+                  {% for key, preset in scan_presets.items() %}
+                    <option value="{{ key }}">{{ preset.label }}</option>
+                  {% endfor %}
+                </select>
+
+                <label class="form-label mt-3" for="custom_ports">Ports personnalisés (optionnel)</label>
+                <input
+                  class="form-control"
+                  id="custom_ports"
+                  name="custom_ports"
+                  placeholder="ex: 80,443,8080 ou 3000-3010"
+                >
+                <div class="form-text">
+                  Laisse vide pour utiliser le mode sélectionné.
+                </div>
+
+                <button class="btn btn-primary mt-4 w-100" type="submit">
+                  ▶ Scanner maintenant
+                </button>
+              </form>
+              {% if error %}
+                <div class="alert alert-danger mt-3" role="alert">
+                  <strong>⚠️ Erreur :</strong> {{ error }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="card shadow-sm mt-4">
+            <div class="card-body">
+              <h2 class="h6 mb-3">📋 Historique (5 derniers scans)</h2>
+              {% if history %}
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Cible</th>
+                        <th>Hôtes</th>
+                        <th>Ports</th>
+                        <th>Durée</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in history %}
+                        <tr>
+                          <td class="text-truncate" style="max-width: 100px;">
+                            <small>{{ item.started_at }}</small>
+                          </td>
+                          <td class="text-truncate" style="max-width: 120px;">
+                            <small>{{ item.target }}</small>
+                          </td>
+                          <td>{{ item.hosts }}</td>
+                          <td><strong>{{ item.open_ports }}</strong></td>
+                          <td>{{ "%.1f"|format(item.elapsed) }}s</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% else %}
+                <p class="text-muted mb-0">Aucun scan enregistré pour le moment.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h2 class="h5 mb-3">📊 Résultat du dernier scan</h2>
+              {% if result %}
+                <div class="mb-4 pb-3 border-bottom">
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <small class="text-muted">Cible</small>
+                      <div><strong>{{ result.target }}</strong></div>
+                      <small class="badge bg-secondary">{{ result.target_type }}</small>
+                    </div>
+                    <div class="col-6">
+                      <small class="text-muted">Résumé</small>
+                      <div>
+                        <small>{{ result.hosts | length }} hôte(s) · <strong>{{ result.open_ports }}</strong> port(s) ouvert(s)</small>
+                      </div>
+                      <small class="text-muted">Durée: {{ "%.1f"|format(result.elapsed) }}s</small>
+                    </div>
+                  </div>
+                </div>
+
+                {% if result.hosts %}
+                  {% for host in result.hosts %}
+                    <div class="host-container {% if host.open_count > 0 %}port-open{% endif %}">
+                      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <div>
+                          <div class="fw-semibold">
+                            {{ host.address }}
+                            {% if host.hostname %}<span class="text-muted">({{ host.hostname }})</span>{% endif %}
+                          </div>
+                          <small class="text-muted">{{ host.open_count }} port(s) ouvert(s)</small>
+                        </div>
+                        <span class="badge {% if host.state == 'up' %}bg-success{% else %}bg-secondary{% endif %}">
+                          {{ host.state | upper }}
+                        </span>
+                      </div>
+
+                      {% if host.ports %}
+                        <div class="table-responsive">
+                          <table class="table table-sm align-middle mb-0">
+                            <thead>
+                              <tr>
+                                <th>Port</th>
+                                <th>Service</th>
+                                <th>État</th>
+                                <th>Détails</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for port in host.ports %}
+                                <tr>
+                                  <td><strong>{{ port.port }}/{{ port.proto }}</strong></td>
+                                  <td>{{ port.service or "?" }}</td>
+                                  <td>
+                                    <span class="badge {% if port.state == 'open' %}bg-success{% elif port.state == 'closed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                      {{ port.state }}
+                                    </span>
+                                  </td>
+                                  <td class="text-truncate" style="max-width: 300px;">
+                                    <small>
+                                      {% if port.product %}{{ port.product }}{% endif %}
+                                      {% if port.version %} {{ port.version }}{% endif %}
+                                      {% if port.extrainfo %} ({{ port.extrainfo }}){% endif %}
+                                    </small>
+                                  </td>
+                                </tr>
+
+                                {% if port.vulnerabilities %}
+                                  <tr>
+                                    <td colspan="4">
+                                      {% for vuln in port.vulnerabilities %}
+                                        <div class="vulnerability-alert {% if vuln.risk == 'Critique' %}risk-critical{% elif vuln.risk == 'Élevé' %}risk-élevé{% endif %}">
+                                          <div class="vulnerability-title">
+                                            ⚠️ {{ vuln.risk }} - {{ vuln.issue }}
+                                          </div>
+                                          <div class="vulnerability-solution">
+                                            <strong>✅ Solution :</strong> {{ vuln.solution }}
+                                          </div>
+                                        </div>
+                                      {% endfor %}
+                                    </td>
+                                  </tr>
+                                {% endif %}
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      {% else %}
+                        <p class="text-muted mb-0"><small>Aucun port détecté sur cet hôte.</small></p>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="text-muted mb-0">Aucun hôte détecté lors du scan.</p>
+                {% endif %}
+              {% else %}
+                <div class="alert alert-warning" role="alert">
+                  <strong>💡 Astuce :</strong> Lance un scan pour afficher les résultats ici. Choisis un mode de scan (rapide, courants, complet) ou entre des ports personnalisés.
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const arpSelect = document.getElementById("arp_select");
+      const loadArpBtn = document.getElementById("load_arp_btn");
+      const targetInput = document.getElementById("target");
+
+      loadArpBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        loadArpBtn.disabled = true;
+        loadArpBtn.textContent = "⟳ Chargement...";
+
+        try {
+          const resp = await fetch("/api/arp-neighbors");
+          const neighbors = await resp.json();
+
+          arpSelect.innerHTML = '<option value="">-- Sélectionner --</option>';
+          neighbors.forEach((n) => {
+            const option = document.createElement("option");
+            option.value = n.ip;
+            option.textContent = `${n.ip} (${n.mac})`;
+            arpSelect.appendChild(option);
+          });
+
+          if (neighbors.length === 0) {
+            arpSelect.innerHTML += '<option disabled>Aucun voisin détecté</option>';
+          }
+        } catch (err) {
+          console.error("Erreur ARP:", err);
+          arpSelect.innerHTML += '<option disabled>Erreur lors du chargement ARP</option>';
+        } finally {
+          loadArpBtn.disabled = false;
+          loadArpBtn.textContent = "↻ Actualiser ARP";
+        }
+      });
+
+      arpSelect.addEventListener("change", (e) => {
+        if (e.target.value) {
+          targetInput.value = e.target.value;
+        }
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

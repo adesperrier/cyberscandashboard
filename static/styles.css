@@ -1,0 +1,217 @@
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #001368 0%, #764ba2 100%);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #2d3561 0%, #1a1f3a 100%) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 1.4rem;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.card.card-sm {
+  border-radius: 8px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2d3561;
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.badge {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.badge.bg-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.badge.bg-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.badge.bg-secondary {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+}
+
+table {
+  font-size: 0.95rem;
+}
+
+table td,
+table th {
+  white-space: nowrap;
+  padding: 0.75rem;
+}
+
+table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #2d3561;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+table tbody tr {
+  transition: all 0.2s ease;
+}
+
+table tbody tr:hover {
+  background: #f0f4ff;
+}
+
+.alert {
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #0c4a6e;
+}
+
+.host-container {
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.host-container:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.port-open {
+  background: linear-gradient(135deg, #ecfdf5 0%, #dbeafe 100%);
+  border-left: 4px solid #10b981;
+}
+
+.vulnerability-alert {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+  padding: 0.875rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.vulnerability-alert.risk-critical {
+  border-left-color: #dc2626;
+  background: #fee2e2;
+}
+
+.vulnerability-alert.risk-élevé {
+  border-left-color: #f59e0b;
+  background: #fef3c7;
+}
+
+.vulnerability-title {
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 0.5rem;
+}
+
+.vulnerability-solution {
+  background: #ecfdf5;
+  border-left: 3px solid #10b981;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  color: #065f46;
+  font-size: 0.9rem;
+}
+
+.form-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.text-muted {
+  color: #9ca3af !important;
+}
+
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  table td,
+  table th {
+    padding: 0.5rem;
+  }
+}
