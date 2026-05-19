@@ -1,519 +1,135 @@
-from __future__ import annotations
-import socket
-import ipaddress
+import sys
 import os
-import re
-import shutil
 import subprocess
-import uuid
-from collections import deque
-from datetime import datetime
-
+import json
 import nmap
-from flask import Flask, jsonify, render_template, request
+import socket
+from datetime import datetime
+from flask import Flask, render_template, request, jsonify
 
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8')
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-change-me")
+app.config['JSON_AS_ASCII'] = False
 
-MAX_NETWORK_HOSTS = 1024
-# Charger l'historique des scans depuis le dossier 'scans' au démarrage
-import json
-from glob import glob
-HISTORY = deque(maxlen=100)
-scans_dir = os.path.join(os.path.dirname(__file__), "scans")
-if os.path.isdir(scans_dir):
-    scan_files = sorted(glob(os.path.join(scans_dir, "*.json")), key=os.path.getmtime, reverse=True)
-    for scan_file in scan_files:
-        try:
-            with open(scan_file, "r", encoding="utf-8") as f:
-                scan = json.load(f)
-                HISTORY.appendleft({
-                    "scan_id": scan.get("scan_id"),
-                    "target": scan.get("target"),
-                    "started_at": scan.get("started_at"),
-                    "elapsed": scan.get("elapsed"),
-                    "hosts": len(scan.get("hosts", [])),
-                    "open_ports": scan.get("open_ports", 0),
-                })
-        except Exception:
-            pass
+SCANS_DIR = os.path.join(os.path.dirname(__file__), 'scans')
+os.makedirs(SCANS_DIR, exist_ok=True)
 
-DOMAIN_RE = re.compile(
-    r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)"
-    r"(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.?$"
-)
-
-SCAN_PRESETS = {
-    "quick": {
-        "args": "-sV --top-ports 100",
-        "label": "Quick (top 100 ports)",
-    },
-    "common": {
-        "args": "-sV -p 20,21,22,23,25,53,67,68,80,110,123,135,139,143,161,389,443,445,465,514,587,636,993,995,1433,3306,3389,5432,5984,6379,7000,8080,8443,9200,27017",
-        "label": "Courants (services web, DB, RDP, etc)",
-    },
-    "full": {
-        "args": "-sV -p 1-65535",
-        "label": "Complet (tous les ports - LENT)",
-    },
+VULNERABILITY_DB = {
+    21: {'service': 'FTP', 'risk': 'HIGH', 'issues': ['Credentials in cleartext', 'Old protocol']},
+    23: {'service': 'Telnet', 'risk': 'CRITICAL', 'issues': ['No encryption', 'Deprecated']},
+    80: {'service': 'HTTP', 'risk': 'MEDIUM', 'issues': ['No encryption', 'Use HTTPS']},
+    443: {'service': 'HTTPS', 'risk': 'LOW', 'issues': ['Verify certificate']},
+    22: {'service': 'SSH', 'risk': 'LOW', 'issues': ['Verify key-based auth']},
+    445: {'service': 'SMB', 'risk': 'HIGH', 'issues': ['Ransomware target', 'Patch required']},
+    3306: {'service': 'MySQL', 'risk': 'HIGH', 'issues': ['Exposed DB', 'Weak credentials']},
+    5432: {'service': 'PostgreSQL', 'risk': 'HIGH', 'issues': ['Exposed DB', 'No auth']},
+    27017: {'service': 'MongoDB', 'risk': 'CRITICAL', 'issues': ['No authentication by default']},
+    6379: {'service': 'Redis', 'risk': 'CRITICAL', 'issues': ['No auth by default', 'Data exposure']},
+    3389: {'service': 'RDP', 'risk': 'HIGH', 'issues': ['Brute force target']},
+    135: {'service': 'RPC', 'risk': 'HIGH', 'issues': ['Wormable service']},
 }
 
-KNOWN_VULNERABILITIES = {
-    "ftp": [
-        {
-            "version": "*",
-            "issue": "FTP sans chiffrage",
-            "risk": "Critique",
-            "solution": "Désactiver FTP. Utiliser SFTP/SCP ou SSH.",
-        }
-    ],
-    "telnet": [
-        {
-            "version": "*",
-            "issue": "Telnet sans chiffrage",
-            "risk": "Critique",
-            "solution": "Désactiver Telnet. Utiliser SSH.",
-        }
-    ],
-    "http": [
-        {
-            "version": "*",
-            "issue": "HTTP sans SSL/TLS",
-            "risk": "Élevé",
-            "solution": "Configurer HTTPS/TLS. Rediriger HTTP vers HTTPS.",
-        }
-    ],
-    "ssh": [
-        {
-            "version": "OpenSSH 1.*",
-            "issue": "OpenSSH très ancien (vulnérable)",
-            "risk": "Élevé",
-            "solution": "Mettre à jour SSH à la dernière version stable.",
-        }
-    ],
-    "smb": [
-        {
-            "version": "*",
-            "issue": "SMB exposé sur le réseau",
-            "risk": "Élevé",
-            "solution": "Restreindre SMB au réseau interne uniquement. Utiliser VPN.",
-        }
-    ],
-    "mysql": [
-        {
-            "version": "*",
-            "issue": "MySQL exposé publiquement",
-            "risk": "Critique",
-            "solution": "Ne pas exposer MySQL. Utiliser tunnel SSH ou proxy.",
-        }
-    ],
-    "postgresql": [
-        {
-            "version": "*",
-            "issue": "PostgreSQL exposé publiquement",
-            "risk": "Critique",
-            "solution": "Ne pas exposer PostgreSQL. Utiliser tunnel SSH ou proxy.",
-        }
-    ],
-    "mongodb": [
-        {
-            "version": "*",
-            "issue": "MongoDB sans authentification par défaut",
-            "risk": "Critique",
-            "solution": "Activer authentification. Restreindre accès réseau.",
-        }
-    ],
-    "redis": [
-        {
-            "version": "*",
-            "issue": "Redis sans mot de passe par défaut",
-            "risk": "Critique",
-            "solution": "Configurer mot de passe Redis. Restreindre accès réseau.",
-        }
-    ],
-}
-
-
-def normalize_target(value: str) -> tuple[str, str]:
-    value = (value or "").strip()
-    if not value:
-        raise ValueError("La cible est requise.")
-
-    try:
-        ip = ipaddress.ip_address(value)
-        return str(ip), "ip"
-    except ValueError:
-        pass
-
-    try:
-        network = ipaddress.ip_network(value, strict=False)
-    except ValueError:
-        network = None
-
-    if network:
-        if network.num_addresses > MAX_NETWORK_HOSTS:
-            raise ValueError(
-                f"Plage trop large : maximum {MAX_NETWORK_HOSTS} hôtes autorisés."
-            )
-        return str(network), "network"
-
-    if DOMAIN_RE.fullmatch(value):
-        return value.lower().rstrip("."), "domain"
-
-    raise ValueError("Cible invalide. Utilise une IP, un domaine ou un CIDR.")
-
-
-def get_arp_neighbors() -> list[dict]:
-    """Récupère les voisins ARP (hôtes actifs sur le réseau local)."""
-    try:
-        if os.name == "nt":
-            output = subprocess.check_output(["arp", "-a"], text=True)
-            lines = output.split("\n")
-            neighbors = []
-            for line in lines:
-                parts = line.split()
-                if len(parts) >= 2:
-                    try:
-                        ipaddress.ip_address(parts[0])
-                        mac = parts[1] if len(parts) > 1 else "?"
-                        neighbors.append(
-                            {
-                                "ip": parts[0],
-                                "mac": mac,
-                                "state": "dynamic",
-                            }
-                        )
-                    except ValueError:
-                        pass
-            return neighbors
-        else:
-            output = subprocess.check_output(
-                ["arp", "-a"], text=True, stderr=subprocess.DEVNULL
-            )
-            lines = output.split("\n")
-            neighbors = []
-            for line in lines:
-                if "(" in line and ")" in line:
-                    ip_match = re.search(r"\(([0-9.]+)\)", line)
-                    mac_match = re.search(
-                        r"([0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2})",
-                        line,
-                        re.IGNORECASE,
-                    )
-                    if ip_match:
-                        neighbors.append(
-                            {
-                                "ip": ip_match.group(1),
-                                "mac": mac_match.group(1) if mac_match else "?",
-                                "state": "dynamic",
-                            }
-                        )
-            return neighbors
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return []
-
-
-def ping_host(ip: str, timeout: int = 2) -> bool:
-    """Vérifie si un hôte est actif via ICMP (ping)."""
-    try:
-        if os.name == "nt":
-            subprocess.check_output(
-                ["ping", "-n", "1", "-w", str(timeout * 1000), ip],
-                stderr=subprocess.DEVNULL,
-                timeout=timeout + 1,
-            )
-        else:
-            subprocess.check_output(
-                ["ping", "-c", "1", "-W", str(timeout * 1000), ip],
-                stderr=subprocess.DEVNULL,
-                timeout=timeout + 1,
-            )
-        return True
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-        return False
-
-
-def dns_lookup(target: str) -> dict:
-    """Effectue une recherche DNS (forward et reverse)."""
-    result = {"forward": None, "reverse": None, "error": None}
-    try:
-        if re.match(r"^[0-9.]+$", target):
-            result["forward"] = socket.gethostbyaddr(target)[0]
-            result["reverse"] = target
-        else:
-            result["forward"] = target
-            result["reverse"] = socket.gethostbyname(target)
-    except (socket.gaierror, socket.herror):
-        result["error"] = "Résolution DNS impossible"
-    return result
-
-
-def traceroute(target: str, hops: int = 15) -> list[dict]:
-    """Trace la route vers la cible."""
-    try:
-        if os.name == "nt":
-            output = subprocess.check_output(
-                ["tracert", "-h", str(hops), target],
-                stderr=subprocess.DEVNULL,
-                timeout=30,
-                text=True,
-            )
-        else:
-            output = subprocess.check_output(
-                ["traceroute", "-m", str(hops), target],
-                stderr=subprocess.DEVNULL,
-                timeout=30,
-                text=True,
-            )
-
-        hops_list = []
-        for line in output.split("\n"):
-            if re.search(r"\d+\.", line):
-                match = re.search(r"(\[?[0-9.]+\]?)", line)
-                if match:
-                    hops_list.append({"hop": line.strip()})
-        return hops_list
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-        return [{"error": "Traceroute impossible"}]
-
-
-def whois_lookup(target: str) -> dict:
-    """Récupère les infos WHOIS (enregistrement de domaine)."""
-    result = {"domain": target, "info": None, "error": None}
-    try:
-        if os.name == "nt":
-            result["error"] = "WHOIS non disponible sur Windows (nativement)"
-        else:
-            output = subprocess.check_output(
-                ["whois", target],
-                stderr=subprocess.DEVNULL,
-                timeout=10,
-                text=True,
-            )
-            lines = []
-            for line in output.split("\n")[:20]:
-                if line.strip():
-                    lines.append(line.strip())
-            result["info"] = "\n".join(lines) if lines else "Aucune information"
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-        result["error"] = "Commande WHOIS non trouvée. Installe: apt-get install whois"
-    return result
-
-
-def compare_scans(target_ip: str) -> dict:
-    """Compare le scan actuel avec le scan précédent pour l'IP."""
-    if target_ip not in SCAN_DB:
-        return {"has_previous": False, "comparison": None}
-
-    previous_scan = SCAN_DB[target_ip]
-    return {
-        "has_previous": True,
-        "previous_scan": previous_scan,
-        "timestamp": previous_scan.get("timestamp"),
-    }
-
-
-
-def build_nmap_search_path() -> tuple[str, ...]:
-    exe_name = "nmap.exe" if os.name == "nt" else "nmap"
-    candidates = []
-
-    env_path = os.environ.get("NMAP_PATH", "").strip()
-    if env_path:
-        env_path = env_path.strip('"')
-        if os.path.isdir(env_path):
-            env_path = os.path.join(env_path, exe_name)
-        candidates.append(env_path)
-
-    found = shutil.which(exe_name)
-    if found:
-        candidates.append(found)
-
-    if os.name == "nt":
-        candidates.extend(
-            [
-                r"C:\Program Files\Nmap\nmap.exe",
-                r"C:\Program Files (x86)\Nmap\nmap.exe",
-            ]
-        )
-    else:
-        candidates.extend(["/usr/bin/nmap", "/usr/local/bin/nmap", "/snap/bin/nmap"])
-
-    candidates.append(exe_name)
-
-    seen = set()
-    deduped = []
-    for path in candidates:
-        if not path:
-            continue
-        normalized = os.path.normpath(path)
-        if normalized in seen:
-            continue
-        seen.add(normalized)
-        deduped.append(path)
-
-    return tuple(deduped)
-
-
-def check_vulnerabilities(service: str, product: str, version: str) -> list[dict]:
-    service_lower = service.lower()
-    product_lower = (product or "").lower()
-    version_lower = (version or "").lower()
-
-    vulns = []
-    if service_lower in KNOWN_VULNERABILITIES:
-        for vuln in KNOWN_VULNERABILITIES[service_lower]:
-            if vuln["version"] == "*" or version_lower.startswith(vuln["version"]):
-                vulns.append(vuln)
-
-    return vulns
-
-
-def run_scan(target: str, scan_preset: str = "quick", custom_ports: str = "") -> dict:
-    import json
-    scans_dir = os.path.join(os.path.dirname(__file__), "scans")
-    os.makedirs(scans_dir, exist_ok=True)
-
-    if scan_preset not in SCAN_PRESETS and not custom_ports:
-        scan_preset = "quick"
-
-    if custom_ports and custom_ports.strip():
-        scan_args = f"-sV -p {custom_ports.strip()}"
-    else:
-        scan_args = SCAN_PRESETS[scan_preset]["args"]
-
-    scanner = nmap.PortScanner(nmap_search_path=build_nmap_search_path())
-    started = datetime.now()
-    scanner.scan(hosts=target, arguments=scan_args)
-    elapsed = (datetime.now() - started).total_seconds()
-
-    hosts = []
-    total_open_ports = 0
-
-    for host in scanner.all_hosts():
-        host_state = scanner[host].state()
-        hostname = scanner[host].hostname() or ""
-        ports = []
-        open_count = 0
-
-        for proto in scanner[host].all_protocols():
-            for port in sorted(scanner[host][proto].keys()):
-                port_info = scanner[host][proto][port]
-                state = port_info.get("state", "")
-                if state == "open":
-                    open_count += 1
-
-                service = port_info.get("name", "")
-                product = port_info.get("product", "")
-                version = port_info.get("version", "")
-                vulns = check_vulnerabilities(service, product, version)
-
-                ports.append(
-                    {
-                        "port": port,
-                        "proto": proto,
-                        "state": state,
-                        "service": service,
-                        "product": product,
-                        "version": version,
-                        "extrainfo": port_info.get("extrainfo", ""),
-                        "vulnerabilities": vulns,
-                    }
-                )
-
-        total_open_ports += open_count
-        hosts.append(
-            {
-                "address": host,
-                "hostname": hostname,
-                "state": host_state,
-                "ports": ports,
-                "open_count": open_count,
-            }
-        )
-
-    scan_result = {
-        "scan_id": uuid.uuid4().hex,
-        "target": target,
-        "started_at": started.strftime("%Y-%m-%d %H:%M:%S"),
-        "timestamp": datetime.now().isoformat(),
-        "elapsed": elapsed,
-        "scan_args": scan_args,
-        "hosts": hosts,
-        "open_ports": total_open_ports,
-    }
-
-    # Enregistrer le scan dans le dossier 'scans' sous forme de fichier JSON
-    scan_file = os.path.join(scans_dir, f"{scan_result['scan_id']}.json")
-    with open(scan_file, "w", encoding="utf-8") as f:
-        json.dump(scan_result, f, ensure_ascii=False, indent=2)
-
-    return scan_result
-
-
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
 def index():
-    result = None
-    error = None
+    return render_template('index.html')
 
-    if request.method == "POST":
-        target_input = request.form.get("target", "")
-        scan_preset = request.form.get("scan_preset", "quick")
-        custom_ports = request.form.get("custom_ports", "")
+@app.route('/api/scan', methods=['POST'])
+def scan():
+    data = request.get_json()
+    target = data.get('target', '').strip()
+    mode = data.get('mode', 'quick')
+    custom_ports = data.get('custom_ports', '')
 
-        try:
-            target, target_type = normalize_target(target_input)
-            result = run_scan(target, scan_preset, custom_ports)
-            result["target_type"] = target_type
+    if not target:
+        return jsonify({'error': 'Target required'}), 400
 
-            HISTORY.appendleft(
-                {
-                    "scan_id": result["scan_id"],
-                    "target": result["target"],
-                    "started_at": result["started_at"],
-                    "elapsed": result["elapsed"],
-                    "hosts": len(result["hosts"]),
-                    "open_ports": result["open_ports"],
-                }
-            )
-        except nmap.PortScannerError as exc:
-            error = (
-                "Nmap introuvable. Installe-le ou définis NMAP_PATH vers nmap.exe "
-                f"(ou son dossier). Détail: {exc}"
-            )
-        except ValueError as exc:
-            error = str(exc)
+    port_ranges = {
+        'quick': '1-100',
+        'common': '1,3,22,25,53,80,110,143,443,445,993,995,1433,3306,3389,5432,5900,8080,8443,27017,6379',
+        'full': '1-65535'
+    }
 
-    return render_template(
-        "index.html",
-        result=result,
-        error=error,
-        history=list(HISTORY),
-        scan_presets=SCAN_PRESETS,
-    )
+    if custom_ports:
+        ports = custom_ports
+    else:
+        ports = port_ranges.get(mode, '1-100')
 
-
-@app.route("/api/arp-neighbors")
-def api_arp_neighbors():
-    """Retourne la liste des voisins ARP détectés."""
-    neighbors = get_arp_neighbors()
-    return jsonify(neighbors)
-
-
-@app.route("/api/ping")
-def api_ping():
-    """Teste si un hôte est actif."""
-    ip = request.args.get("ip", "").strip()
-    if not ip:
-        return jsonify({"error": "IP requise"}), 400
     try:
-        ipaddress.ip_address(ip)
-    except ValueError:
-        return jsonify({"error": "IP invalide"}), 400
-    alive = ping_host(ip)
-    return jsonify({"ip": ip, "alive": alive})
+        nm = nmap.PortScanner()
+        scan_args = f'-sV -p {ports}'
+        nm.scan(target, arguments=scan_args)
 
+        results = []
+        for host in nm.all_hosts():
+            if nm[host].state() == 'up':
+                for proto in nm[host].all_protocols():
+                    ports = nm[host][proto].keys()
+                    for port in ports:
+                        port_data = nm[host][proto][port]
+                        port_num = int(port)
+                        state = port_data['state']
+                        service = port_data.get('name', 'unknown')
+                        product = port_data.get('product', '')
+                        version = port_data.get('version', '')
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+                        vuln_info = VULNERABILITY_DB.get(port_num, {})
+
+                        results.append({
+                            'port': port_num,
+                            'state': state,
+                            'service': service,
+                            'product': product,
+                            'version': version,
+                            'risk': vuln_info.get('risk', 'LOW'),
+                            'issues': vuln_info.get('issues', [])
+                        })
+
+        scan_result = {
+            'target': target,
+            'timestamp': datetime.now().isoformat(),
+            'ports': results,
+            'summary': {
+                'total_ports': len(results),
+                'open_ports': len([r for r in results if r['state'] == 'open']),
+                'filtered_ports': len([r for r in results if r['state'] == 'filtered']),
+                'critical_issues': len([r for r in results if r['risk'] == 'CRITICAL']),
+                'high_issues': len([r for r in results if r['risk'] == 'HIGH']),
+            }
+        }
+
+        filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{target.replace('/', '_')}.json"
+        filepath = os.path.join(SCANS_DIR, filename)
+        with open(filepath, 'w') as f:
+            json.dump(scan_result, f, indent=2, ensure_ascii=False)
+
+        return jsonify(scan_result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/history', methods=['GET'])
+def get_history():
+    history = []
+    try:
+        for filename in sorted(os.listdir(SCANS_DIR), reverse=True)[:10]:
+            if filename.endswith('.json'):
+                filepath = os.path.join(SCANS_DIR, filename)
+                with open(filepath, 'r') as f:
+                    data = json.load(f)
+                    history.append({
+                        'filename': filename,
+                        'target': data.get('target'),
+                        'timestamp': data.get('timestamp'),
+                        'summary': data.get('summary')
+                    })
+    except:
+        pass
+    return jsonify(history)
+
+@app.route('/api/status', methods=['GET'])
+def status():
+    return jsonify({'status': 'online', 'version': '1.0.0'})
+
+if __name__ == '__main__':
+    app.run(debug=False, host='127.0.0.1', port=5000)

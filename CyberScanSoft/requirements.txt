@@ -1,2 +1,3 @@
-Flask
-python-nmap
+Flask==3.0.0
+python-nmap==0.0.1
+Werkzeug==3.0.0

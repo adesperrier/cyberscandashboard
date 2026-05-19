@@ -1,132 +1,183 @@
 # 🌐 CyberScan Dashboard - Site Vitrine
 
-Site web moderne et professionnel pour présenter **CyberScan Dashboard**, un outil de scan réseau et d'analyse cybersécurité.
+Site web moderne pour présenter **CyberScan Dashboard**, un outil de scan réseau et d'analyse cybersécurité.
 
-## 🎨 Design & Features
+## 🚀 Installation Rapide
 
-✨ **Design Cyberpunk Moderne**
-- Thème sombre avec bleu néon primaire (#00d9ff) et vert néon secondaire (#00ff88)
-- Animations subtiles et fluides
-- Interface réactive et responsive
-- Effets glow neon et ombres cybersécurité
+### Option 1: Utilisateurs (Recommended)
 
-📱 **Responsive & Accessible**
-- Mobile-first approach
-- Compatible tous les navigateurs modernes
-- Accessibilité WCAG compliant
+**Windows:**
+```bash
+1. Téléchargez l'application
+2. Double-cliquez sur run.bat
+3. Le navigateur s'ouvre automatiquement
+```
 
-🚀 **Performance**
-- CSS optimisé (~889 lignes)
-- JavaScript vanilla minimal (~155 lignes)
-- Pas de dépendances externes (sauf Bootstrap CDN)
-- PageSpeed optimisé
+**Linux/Mac:**
+```bash
+./run.sh
+```
+
+### Option 2: Développeurs (Source Code)
+
+```bash
+git clone https://github.com/adesperrier/cyberscandashboard
+cd cyberscandashboard/CyberScanSoft
+
+# Windows
+run.bat
+
+# Linux/Mac
+chmod +x run.sh
+./run.sh
+```
+
+### Option 3: Manuel
+
+```bash
+pip install -r requirements.txt
+python launcher.py
+```
+
+L'application s'ouvre automatiquement sur **http://127.0.0.1:5000**
+
+## 🎯 Sections du Site
+
+1. **Navbar** - Navigation fluide
+2. **Hero** - Présentation du projet
+3. **Fonctionnalités** - 6 features principales
+4. **Architecture** - Flux utilisateur
+5. **Technologies** - Stack complet
+6. **Screenshots** - Aperçu interface
+7. **Installation** - Guide démarrage
+8. **Roadmap** - Futures fonctionnalités
+9. **Footer** - Ressources & contact
+
+## 🎨 Design
+
+- Thème cyberpunk sombre
+- Bleu néon (#00d9ff)
+- Animations fluides
+- Responsive mobile-first
+- Performance optimisée
+
+## 🔧 Prérequis
+
+- Python 3.10+
+- Flask 3.0.0
+- Nmap (optionnel, pour scanning réseau)
+
+**Windows:**
+- Installer Python: https://www.python.org
+- Installer Nmap: https://nmap.org/download.html
+
+**Linux:**
+```bash
+sudo apt-get install python3 python3-pip nmap
+```
 
 ## 📦 Structure du Projet
 
 ```
-CyberScanWeb/
-├── app.py                          # Flask minimaliste
-├── requirements.txt                # Dépendances
-├── templates/
-│   └── index.html                  # Page landing complète
-├── static/
-│   ├── css/
-│   │   └── style.css               # Design cyberpunk
-│   ├── js/
-│   │   └── script.js               # Interactions légères
-│   └── img/                        # Assets (placeholder)
-├── .gitignore
-└── README.md                       # Ce fichier
+CyberScan/
+├── CyberScanWeb/          # Site vitrine (ce dossier)
+│   ├── app.py             # Flask simple
+│   ├── templates/
+│   │   └── index.html
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── img/
+│   └── README.md
+│
+└── CyberScanSoft/         # Application desktop
+    ├── run.bat            # Windows launcher
+    ├── run.sh             # Linux launcher
+    ├── launcher.py        # Python launcher
+    ├── app.py             # Flask app
+    ├── templates/
+    ├── static/
+    └── README.md
 ```
 
-## 🎯 Sections Incluses
+## ⚠️ Avertissement Légal
 
-1. **Navbar Fixe** - Navigation avec liens smooth scroll
-2. **Hero Section** - Titre attrayant avec CTA
-3. **Fonctionnalités** - 6 cards de features
-4. **Architecture** - Diagramme flux utilisateur
-5. **Technologies** - Stack technique complet
-6. **Screenshots** - Galerie du logiciel
-7. **Installation** - Guide étape par étape
-8. **Roadmap** - Timeline des features futures
-9. **Footer** - Links et mentions légales
+**Utilisation Autorisée UNIQUEMENT sur:**
+- Systèmes dont vous êtes propriétaire
+- Réseaux autorisés
+- Tests de pénétration autorisés
 
-## 🚀 Démarrage Rapide
+L'utilisation non autorisée est **ILLÉGALE**.
 
-### Installation
+## 📝 Lancer CyberScan
 
+### 1️⃣ Installation
+
+**Windows:**
+```
+Double-cliquez run.bat
+```
+
+**Linux/Mac:**
 ```bash
-# Installer Flask
+chmod +x run.sh
+./run.sh
+```
+
+**Manuel:**
+```bash
+pip install -r requirements.txt
+python launcher.py
+```
+
+### 2️⃣ Scanner une Cible
+
+1. Entrez une IP, CIDR ou domaine
+2. Choisissez un mode de scan
+3. Cliquez "Scanner"
+4. Consultez les résultats
+
+### 3️⃣ Analyser les Vulnérabilités
+
+- Ports ouverts en vert
+- Services identifiés
+- Vulnérabilités détectées
+- Solutions recommandées
+
+## 🐛 Troubleshooting
+
+### "Python n'est pas reconnu"
+- **Windows:** Réinstallez Python avec "Add to PATH"
+- **Linux:** Utilisez `python3` au lieu de `python`
+
+### "Module Flask not found"
+```bash
 pip install -r requirements.txt
 ```
 
-### Lancer le serveur
+### "Port déjà utilisé"
+L'application essaie automatiquement les ports 5000-9000.
 
+### "Nmap introuvable"
 ```bash
-python app.py
+# Windows: https://nmap.org/download.html
+# Linux: sudo apt-get install nmap
 ```
 
-### Accéder au site
+## 🔗 Ressources
 
-Ouvrez votre navigateur :
-```
-http://127.0.0.1:5000
-```
+- **GitHub**: https://github.com/adesperrier/cyberscandashboard
+- **Nmap**: https://nmap.org
+- **Flask**: https://flask.palletsprojects.com
+- **Bootstrap**: https://getbootstrap.com
 
-## 🎨 Customization
+## 💬 Support
 
-### Couleurs (CSS Variables)
-
-Modifier `static/css/style.css` :
-
-```css
-:root {
-    --primary-neon: #00d9ff;       /* Cyan néon */
-    --secondary-neon: #00ff88;     /* Vert néon */
-    --bg-dark: #0a0e27;            /* Fond principal */
-    --text-light: #e0e0e0;         /* Texte clair */
-}
-```
-
-### Contenu
-
-Modifier `templates/index.html` pour :
-- Changer les textes
-- Ajouter/retirer des sections
-- Personnaliser les links
-
-## 📱 Responsive Breakpoints
-
-- **Mobile**: < 576px
-- **Tablet**: 576px - 768px
-- **Desktop**: > 768px
-
-## ⚡ Performance
-
-- **CSS**: 889 lignes optimisées
-- **JS**: 155 lignes vanilla (pas de framework)
-- **Load Time**: < 1s (local)
-- **PageSpeed**: Optimisé pour 90+ score
-
-## 🔧 Dépendances
-
-- **Flask 3.0.0** - Framework web
-- **Bootstrap 5.3.0** - CSS framework (CDN)
-- **Bootstrap Icons 1.11.0** - Icônes (CDN)
-
-## 📝 License
-
-Voir le projet principal CyberScan Dashboard.
-
-## 🔗 Liens Utiles
-
-- [GitHub CyberScan](https://github.com/adesperrier/cyberscandashboard)
-- [Flask Documentation](https://flask.palletsprojects.com)
-- [Bootstrap 5 Docs](https://getbootstrap.com)
-- [Nmap Official](https://nmap.org)
+- Issues: GitHub Issues
+- Email: contact@cyberscan-dashboard.com
+- LinkedIn: /in/adesperrier
 
 ---
 
-**Développé par Antoine Desperrier** 🔐
-
-Prêt pour déploiement DigitalOcean/Namecheap.
+**Version**: 1.0.0  
+**Status**: ✅ Production Ready
