@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberScan Dashboard - Outil de Scan Réseau Professionnel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#home">
+                <i class="bi bi-shield-check"></i> CyberScan
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-3">
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#features">Fonctionnalités</a></li>
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#technologies">Technologies</a></li>
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#installation">Installation</a></li>
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#roadmap">Roadmap</a></li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-primary-neon" href="https://github.com/adesperrier/cyberscandashboard" target="_blank">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="home" class="hero-section">
+        <div class="hero-content text-center">
+            <div class="hero-badge mb-4">
+                <span class="badge bg-dark-neon">🚀 Outils Cybersécurité Professionnel</span>
+            </div>
+            <h1 class="hero-title">
+                CyberScan Dashboard
+            </h1>
+            <p class="hero-subtitle">
+                Scanner réseau puissant • Analyse de sécurité • Interface moderne
+            </p>
+            <p class="hero-description">
+                Détectez les ports ouverts, analysez les services, identifiez les vulnérabilités.<br>
+                Outil de scan réseau professionnel pour les pentesters, administrateurs et chercheurs en cybersécurité.
+            </p>
+            <div class="hero-cta mt-5">
+                <button class="btn btn-primary-neon btn-lg" data-bs-toggle="modal" data-bs-target="#downloadModal">
+                    <i class="bi bi-download"></i> Télécharger (Bientôt)
+                </button>
+                <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="btn btn-outline-primary btn-lg ms-3">
+                    <i class="bi bi-github"></i> Voir sur GitHub
+                </a>
+            </div>
+        </div>
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- ==================== FONCTIONNALITÉS ==================== -->
+    <section id="features" class="features-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Fonctionnalités Principales</h2>
+                <p class="section-subtitle">Tout ce dont vous avez besoin pour scanner et analyser votre réseau</p>
+            </div>
+            <div class="row g-4">
+                <!-- Feature 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                        <h5 class="feature-title">Scan Nmap Avancé</h5>
+                        <p class="feature-text">
+                            Scans rapides, complets ou personnalisés. Détection optimale des ports ouverts et des services actifs.
+                        </p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                        <h5 class="feature-title">Détection de Services</h5>
+                        <p class="feature-text">
+                            Identification automatique des services, versions et produits exécutés sur chaque port détecté.
+                        </p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                        <h5 class="feature-title">Dashboard Temps Réel</h5>
+                        <p class="feature-text">
+                            Interface web moderne et responsive affichant les résultats en temps réel avec visualisations claires.
+                        </p>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <h5 class="feature-title">Alertes de Sécurité</h5>
+                        <p class="feature-text">
+                            Détection automatique des vulnérabilités connues avec recommandations de mitigation et solutions.
+                        </p>
+                    </div>
+                </div>
+                <!-- Feature 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-file-earmark-json"></i>
+                        </div>
+                        <h5 class="feature-title">Export JSON</h5>
+                        <p class="feature-text">
+                            Exportez les résultats en JSON pour intégration avec d'autres outils et analyses ultérieures.
+                        </p>
+                    </div>
+                </div>
+                <!-- Feature 6 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <h5 class="feature-title">Historique Intégré</h5>
+                        <p class="feature-text">
+                            Conservez l'historique de vos 100 derniers scans pour comparaison et audit de sécurité continu.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ARCHITECTURE ==================== -->
+    <section id="architecture" class="architecture-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Fonctionnement & Architecture</h2>
+                <p class="section-subtitle">Comment CyberScan Dashboard fonctionne</p>
+            </div>
+            <div class="architecture-diagram">
+                <div class="arch-block arch-input">
+                    <i class="bi bi-person"></i>
+                    <p>Utilisateur</p>
+                </div>
+                <div class="arch-arrow"><i class="bi bi-arrow-down"></i></div>
+                <div class="arch-block arch-process">
+                    <i class="bi bi-shield-check"></i>
+                    <p>CyberScan<br>Dashboard</p>
+                </div>
+                <div class="arch-arrow"><i class="bi bi-arrow-down"></i></div>
+                <div class="arch-block arch-scan">
+                    <i class="bi bi-diagram-3"></i>
+                    <p>Scan Réseau<br>(Nmap)</p>
+                </div>
+                <div class="arch-arrow"><i class="bi bi-arrow-down"></i></div>
+                <div class="arch-block arch-analysis">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Analyse &<br>Détection</p>
+                </div>
+                <div class="arch-arrow"><i class="bi bi-arrow-down"></i></div>
+                <div class="arch-block arch-output">
+                    <i class="bi bi-check-circle"></i>
+                    <p>Résultats<br>& Alertes</p>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <div class="arch-info">
+                        <h5>Scan Flexible</h5>
+                        <p>Support IP unique, plage CIDR, et domaines. Trois modes : rapide, courants, ou complet.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="arch-info">
+                        <h5>Analyse Intelligente</h5>
+                        <p>Détection des services, versions de logiciels, et identification des vulnérabilités connues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TECHNOLOGIES ==================== -->
+    <section id="technologies" class="technologies-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Stack Technologique</h2>
+                <p class="section-subtitle">Les technologies qui font fonctionner CyberScan</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-file-earmark-code"></i>
+                        <h6>Python 3.10+</h6>
+                        <p>Langage de programmation robuste et moderne</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-cloud"></i>
+                        <h6>Flask</h6>
+                        <p>Framework web léger et performant</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-layout-wtf"></i>
+                        <h6>Bootstrap 5</h6>
+                        <p>Framework UI moderne et responsive</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <h6>Nmap</h6>
+                        <p>Outil de scan réseau professionnel</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-file-earmark-json"></i>
+                        <h6>JSON</h6>
+                        <p>Format d'échange de données</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-terminal"></i>
+                        <h6>Linux / Windows</h6>
+                        <p>Compatibilité multi-plateforme</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-cloud-check"></i>
+                        <h6>DigitalOcean</h6>
+                        <p>Hébergement cloud scalable</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-badge">
+                        <i class="bi bi-sliders2"></i>
+                        <h6>REST API</h6>
+                        <p>Endpoints pour intégration</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SCREENSHOTS ==================== -->
+    <section id="screenshots" class="screenshots-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Aperçu de l'Interface</h2>
+                <p class="section-subtitle">Découvrez l'interface moderne et intuitive</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-window-plus"></i>
+                            <p>Dashboard Principal</p>
+                        </div>
+                        <p class="screenshot-text">Interface de scan principale avec formulaires et résultats en temps réel</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-bar-chart-line"></i>
+                            <p>Résultats de Scan</p>
+                        </div>
+                        <p class="screenshot-text">Tableau détaillé des ports, services et vulnérabilités détectées</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="screenshot-card">
+                        <div class="screenshot-placeholder">
+                            <i class="bi bi-clock-history"></i>
+                            <p>Historique & Alertes</p>
+                        </div>
+                        <p class="screenshot-text">Gestion de l'historique et visualisation des alertes de sécurité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== INSTALLATION ==================== -->
+    <section id="installation" class="installation-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Guide d'Installation</h2>
+                <p class="section-subtitle">Démarrez avec CyberScan en quelques minutes</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Step 1 -->
+                    <div class="installation-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Installer les dépendances</h5>
+                            <p>Installez Flask et les modules nécessaires :</p>
+                            <div class="code-block">
+                                <code>pip install -r requirements.txt</code>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="installation-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Installer Nmap</h5>
+                            <p><strong>Windows :</strong> Téléchargez depuis <a href="https://nmap.org/download.html" target="_blank">nmap.org</a></p>
+                            <div class="code-block">
+                                <code>choco install nmap</code>
+                            </div>
+                            <p class="mt-3"><strong>Linux (Ubuntu/Debian) :</strong></p>
+                            <div class="code-block">
+                                <code>sudo apt-get install nmap</code>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="installation-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h5>Lancer l'application</h5>
+                            <p>Démarrez le serveur Flask :</p>
+                            <div class="code-block">
+                                <code>python app.py</code>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="installation-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h5>Accéder à l'interface</h5>
+                            <p>Ouvrez votre navigateur :</p>
+                            <div class="code-block">
+                                <code>http://127.0.0.1:5000</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ROADMAP ==================== -->
+    <section id="roadmap" class="roadmap-section section-padding">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Roadmap Futures</h2>
+                <p class="section-subtitle">Fonctionnalités à venir pour améliorer CyberScan</p>
+            </div>
+            <div class="timeline">
+                <!-- Roadmap 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="roadmap-card">
+                            <h5>CVE Detection</h5>
+                            <p>Intégration de base de données CVE pour détection automatique des vulnérabilités connues</p>
+                            <span class="roadmap-badge">Q3 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Roadmap 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="roadmap-card">
+                            <h5>Docker Support</h5>
+                            <p>Déploiement facile avec Docker et Docker Compose</p>
+                            <span class="roadmap-badge">Q4 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Roadmap 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="roadmap-card">
+                            <h5>Active Directory Scan</h5>
+                            <p>Scan et analyse des environnements Active Directory</p>
+                            <span class="roadmap-badge">Q1 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Roadmap 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="roadmap-card">
+                            <h5>AI Risk Analysis</h5>
+                            <p>Analyse prédictive des risques utilisant machine learning</p>
+                            <span class="roadmap-badge">Q2 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Roadmap 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="roadmap-card">
+                            <h5>PDF Reports</h5>
+                            <p>Génération de rapports PDF professionnels et personnalisés</p>
+                            <span class="roadmap-badge">Q2 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h6 class="footer-title">CyberScan Dashboard</h6>
+                    <p class="footer-text">Outil professionnel de scan réseau et d'analyse cybersécurité.</p>
+                    <div class="footer-social">
+                        <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="social-link">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="social-link">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-links">
+                        <h6>Ressources</h6>
+                        <ul>
+                            <li><a href="https://github.com/adesperrier/cyberscandashboard" target="_blank">GitHub</a></li>
+                            <li><a href="https://nmap.org" target="_blank">Documentation Nmap</a></li>
+                            <li><a href="https://flask.palletsprojects.com" target="_blank">Flask</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="footer-copyright">© 2024 CyberScan Dashboard. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="footer-legal">
+                        <a href="#" class="legal-link">Mentions légales</a> •
+                        <a href="#" class="legal-link">Confidentialité</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== DOWNLOAD MODAL ==================== -->
+    <div class="modal fade" id="downloadModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark-modal">
+                <div class="modal-header border-bottom-neon">
+                    <h5 class="modal-title">Télécharger CyberScan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>CyberScan Dashboard sera bientôt disponible au téléchargement.</p>
+                    <p class="text-muted small">Suivez le projet sur GitHub pour rester informé des mises à jour.</p>
+                </div>
+                <div class="modal-footer border-top-neon">
+                    <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="btn btn-primary-neon">
+                        <i class="bi bi-github"></i> Voir sur GitHub
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
