@@ -1,115 +1,126 @@
 # 🚀 DÉMARRAGE RAPIDE
 
-## Installation & Configuration
+## Site Vitrine (CyberScanWeb)
 
-### 1️⃣ Installer les dépendances
-
-```bash
-pip install -r requirements.txt
-```
-
-Cela installe Flask 3.0.0.
-
-### 2️⃣ Lancer le serveur
+### Lancer le site vitrine
 
 ```bash
 python app.py
 ```
 
-Le serveur démarre sur : **http://127.0.0.1:5000**
-
-### 3️⃣ Ouvrir dans le navigateur
-
-- **Local**: http://127.0.0.1:5000
-- **Remote**: http://[votre-ip]:5000
+Le site s'ouvre sur : **http://127.0.0.1:5000**
 
 ---
 
-## 📂 Structure Fichiers
+## Application CyberScan Dashboard (CyberScanSoft)
+
+### Windows - 1 clic
 
 ```
-CyberScanWeb/
-├── app.py                 # Application Flask (10 lignes)
-├── requirements.txt       # Dépendances
-├── README.md             # Documentation
-├── QUICKSTART.md         # Ce fichier
-├── templates/
-│   └── index.html        # Page landing (504 lignes)
-└── static/
-    ├── css/
-    │   └── style.css     # Design cyberpunk (889 lignes)
-    ├── js/
-    │   └── script.js     # Interactions (155 lignes)
-    └── img/              # Assets (placeholder)
+Allez dans CyberScanSoft/
+Double-cliquez start.bat
+```
+
+### Linux/Mac
+
+```bash
+cd CyberScanSoft
+python3 setup.py
+```
+
+L'application démarre automatiquement sur **http://127.0.0.1:5000**
+
+---
+
+## 📂 Structure du Projet
+
+```
+CyberScan/
+├── CyberScanWeb/          # Site vitrine
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── templates/
+│   └── static/
+│
+└── CyberScanSoft/         # Application desktop
+    ├── start.bat          # Launcher Windows
+    ├── setup.py           # Setup multi-plateforme
+    ├── launcher.py
+    ├── app.py
+    ├── requirements.txt
+    ├── templates/
+    └── static/
 ```
 
 ---
 
-## 🎨 Customization Rapide
+## 🎯 Qu'est-ce que quoi?
+
+**CyberScanWeb** = Site de présentation du projet
+- Page d'accueil avec infos, features, screenshots
+- Lancer avec: `python app.py`
+
+**CyberScanSoft** = Application réelle de scanning réseau
+- Scanne réseaux avec Nmap
+- Interface web moderne
+- Historique des scans
+- Lancer avec: `start.bat` (Windows) ou `python3 setup.py` (Linux/Mac)
+
+---
+
+## ⚙️ Prérequis
+
+- **Python 3.10+**
+- **Nmap** (optionnel, pour CyberScanSoft uniquement)
+
+### Windows
+- Installer Python: https://www.python.org
+- Installer Nmap (optionnel): https://nmap.org/download.html
+
+### Linux
+```bash
+sudo apt-get install python3 python3-pip nmap
+```
+
+---
+
+## 🎨 Customization (Site Vitrine)
 
 ### Changer le titre
 - Fichier: `templates/index.html`
-- Ligne: 6 (`<title>CyberScan Dashboard...</title>`)
+- Ligne: 6
 
 ### Changer les couleurs
 - Fichier: `static/css/style.css`
 - Variables CSS: lignes 1-10
-  - `--primary-neon: #00d9ff` (cyan)
-  - `--secondary-neon: #00ff88` (vert)
-  - `--bg-dark: #0a0e27` (fond)
 
 ### Ajouter du contenu
 - Fichier: `templates/index.html`
-- Copier une section existante et adapter
+- Copier une section existante
 
 ---
 
 ## 🌍 Déploiement DigitalOcean
 
-### Via Gunicorn + Nginx
+### Gunicorn + Nginx
 
 ```bash
-# Installer gunicorn
 pip install gunicorn
-
-# Lancer avec gunicorn
 gunicorn --workers 4 --bind 0.0.0.0:5000 app:app
 ```
-
-### Docker (optionnel)
-
-```dockerfile
-FROM python:3.10-slim
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-CMD ["python", "app.py"]
-```
-
----
-
-## 📊 Statistiques
-
-| Métrique | Valeur |
-|----------|--------|
-| **HTML** | 504 lignes |
-| **CSS** | 889 lignes |
-| **JS** | 155 lignes |
-| **Total** | 1.5K lignes |
-| **Sections** | 9 |
-| **Responsive** | Oui (mobile-first) |
-| **Dépendances** | 1 (Flask) |
 
 ---
 
 ## 🔗 URLs Importantes
 
-- GitHub: https://github.com/adesperrier/cyberscandashboard
-- Flask: https://flask.palletsprojects.com
-- Bootstrap: https://getbootstrap.com
+- **GitHub**: https://github.com/adesperrier/cyberscandashboard
+- **Flask**: https://flask.palletsprojects.com
+- **Nmap**: https://nmap.org
+- **Python**: https://python.org
 
 ---
 
-**✅ Prêt pour production sur DigitalOcean + Namecheap**
+**✅ Démarrage rapide:**
+1. Site vitrine: `python app.py`
+2. App dashboard: Double-cliquez `CyberScanSoft/start.bat` (Windows) ou `cd CyberScanSoft && python3 setup.py` (Linux/Mac)
 
-Pour commencer: `python app.py` → http://127.0.0.1:5000

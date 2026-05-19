@@ -4,37 +4,24 @@ Site web moderne pour présenter **CyberScan Dashboard**, un outil de scan rése
 
 ## 🚀 Installation Rapide
 
-### Option 1: Utilisateurs (Recommended)
+### Option 1: Un clic (Windows) - RECOMMANDÉ
 
-**Windows:**
+1. Téléchargez le projet
+2. Allez dans le dossier `CyberScanSoft`
+3. **Double-cliquez sur `start.bat`**
+4. L'application démarre automatiquement
+
+### Option 2: Ligne de commande (Linux/Mac)
+
 ```bash
-1. Téléchargez l'application
-2. Double-cliquez sur run.bat
-3. Le navigateur s'ouvre automatiquement
+cd CyberScanSoft
+python3 setup.py
 ```
 
-**Linux/Mac:**
-```bash
-./run.sh
-```
-
-### Option 2: Développeurs (Source Code)
+### Option 3: Manuel (tous les systèmes)
 
 ```bash
-git clone https://github.com/adesperrier/cyberscandashboard
-cd cyberscandashboard/CyberScanSoft
-
-# Windows
-run.bat
-
-# Linux/Mac
-chmod +x run.sh
-./run.sh
-```
-
-### Option 3: Manuel
-
-```bash
+cd CyberScanSoft
 pip install -r requirements.txt
 python launcher.py
 ```
@@ -49,7 +36,7 @@ L'application s'ouvre automatiquement sur **http://127.0.0.1:5000**
 4. **Architecture** - Flux utilisateur
 5. **Technologies** - Stack complet
 6. **Screenshots** - Aperçu interface
-7. **Installation** - Guide démarrage
+7. **Installation** - Guide démarrage simplifié
 8. **Roadmap** - Futures fonctionnalités
 9. **Footer** - Ressources & contact
 
@@ -63,13 +50,12 @@ L'application s'ouvre automatiquement sur **http://127.0.0.1:5000**
 
 ## 🔧 Prérequis
 
-- Python 3.10+
-- Flask 3.0.0
-- Nmap (optionnel, pour scanning réseau)
+- **Python 3.10+**
+- **Nmap** (optionnel, pour scanning réseau)
 
 **Windows:**
 - Installer Python: https://www.python.org
-- Installer Nmap: https://nmap.org/download.html
+- Installer Nmap (optionnel): https://nmap.org/download.html
 
 **Linux:**
 ```bash
@@ -91,8 +77,8 @@ CyberScan/
 │   └── README.md
 │
 └── CyberScanSoft/         # Application desktop
-    ├── run.bat            # Windows launcher
-    ├── run.sh             # Linux launcher
+    ├── start.bat          # Launcher Windows
+    ├── setup.py           # Setup multi-plateforme
     ├── launcher.py        # Python launcher
     ├── app.py             # Flask app
     ├── templates/
@@ -109,32 +95,28 @@ CyberScan/
 
 L'utilisation non autorisée est **ILLÉGALE**.
 
-## 📝 Lancer CyberScan
+## 📝 Étapes de Démarrage
 
-### 1️⃣ Installation
+### 1️⃣ Installation (30 secondes)
 
 **Windows:**
 ```
-Double-cliquez run.bat
+1. Double-cliquez CyberScanSoft/start.bat
+2. Attendez l'installation (1-2 min)
+3. Navigateur s'ouvre automatiquement
 ```
 
 **Linux/Mac:**
 ```bash
-chmod +x run.sh
-./run.sh
-```
-
-**Manuel:**
-```bash
-pip install -r requirements.txt
-python launcher.py
+cd CyberScanSoft
+python3 setup.py
 ```
 
 ### 2️⃣ Scanner une Cible
 
 1. Entrez une IP, CIDR ou domaine
-2. Choisissez un mode de scan
-3. Cliquez "Scanner"
+2. Choisissez un mode de scan (Quick/Common/Full)
+3. Cliquez "Scan"
 4. Consultez les résultats
 
 ### 3️⃣ Analyser les Vulnérabilités
@@ -147,7 +129,7 @@ python launcher.py
 ## 🐛 Troubleshooting
 
 ### "Python n'est pas reconnu"
-- **Windows:** Réinstallez Python avec "Add to PATH"
+- **Windows:** Réinstallez Python avec "Add to PATH" coché
 - **Linux:** Utilisez `python3` au lieu de `python`
 
 ### "Module Flask not found"
@@ -156,12 +138,14 @@ pip install -r requirements.txt
 ```
 
 ### "Port déjà utilisé"
-L'application essaie automatiquement les ports 5000-9000.
+L'application cherche automatiquement le prochain port disponible.
 
 ### "Nmap introuvable"
+L'app marche sans Nmap mais le scan réseau ne fonctionne pas.
 ```bash
 # Windows: https://nmap.org/download.html
 # Linux: sudo apt-get install nmap
+# macOS: brew install nmap
 ```
 
 ## 🔗 Ressources
@@ -169,7 +153,7 @@ L'application essaie automatiquement les ports 5000-9000.
 - **GitHub**: https://github.com/adesperrier/cyberscandashboard
 - **Nmap**: https://nmap.org
 - **Flask**: https://flask.palletsprojects.com
-- **Bootstrap**: https://getbootstrap.com
+- **Python**: https://python.org
 
 ## 💬 Support
 
