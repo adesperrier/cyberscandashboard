@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavbarHighlight();
     initScrollReveal();
     initAOS();
+    initOSTabs();
+    initCopyButtons();
 });
 
 // Smooth scroll pour les liens internes
@@ -151,5 +153,64 @@ if ('IntersectionObserver' in window) {
             });
         });
         observer.observe(img);
+    });
+}
+
+// OS Tabs for installation section
+function initOSTabs() {
+    const tabs = document.querySelectorAll('.os-tab');
+    const contents = document.querySelectorAll('.os-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const os = this.getAttribute('data-os');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+
+            this.classList.add('active');
+            const target = document.getElementById('os-' + os);
+            if (target) target.classList.add('active');
+        });
+    });
+}
+
+// Copy to clipboard for code blocks
+function initCopyButtons() {
+    const copyBtns = document.querySelectorAll('.copy-btn');
+
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const codeEl = this.closest('.code-block').querySelector('code');
+            const text = codeEl ? codeEl.innerText : '';
+
+            if (!text) return;
+
+            navigator.clipboard.writeText(text).then(() => {
+                this.classList.add('copied');
+                this.innerHTML = '<i class="bi bi-clipboard-check"></i>';
+                setTimeout(() => {
+                    this.classList.remove('copied');
+                    this.innerHTML = '<i class="bi bi-clipboard"></i>';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                this.classList.add('copied');
+                this.innerHTML = '<i class="bi bi-clipboard-check"></i>';
+                setTimeout(() => {
+                    this.classList.remove('copied');
+                    this.innerHTML = '<i class="bi bi-clipboard"></i>';
+                }, 2000);
+            });
+        });
     });
 }

@@ -53,11 +53,14 @@
                 Outil de scan réseau professionnel pour les pentesters, administrateurs et chercheurs en cybersécurité.
             </p>
             <div class="hero-cta mt-5">
-                <button class="btn btn-primary-neon btn-lg" data-bs-toggle="modal" data-bs-target="#downloadModal">
-                    <i class="bi bi-download"></i> Télécharger (Bientôt)
-                </button>
+                <a href="https://github.com/adesperrier/cyberscandashboard/archive/refs/heads/main.zip" class="btn btn-primary-neon btn-lg">
+                    <i class="bi bi-download"></i> Télécharger ZIP
+                </a>
                 <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="btn btn-outline-primary btn-lg ms-3">
                     <i class="bi bi-github"></i> Voir sur GitHub
+                </a>
+                <a href="#installation" class="btn btn-outline-secondary btn-lg ms-3 scroll-link">
+                    <i class="bi bi-play-circle"></i> Guide d'installation
                 </a>
             </div>
         </div>
@@ -310,55 +313,218 @@
         <div class="container">
             <div class="section-header text-center mb-5">
                 <h2>Guide d'Installation</h2>
-                <p class="section-subtitle">Démarrez avec CyberScan en quelques minutes</p>
+                <p class="section-subtitle">Démarrez avec CyberScan en 3 étapes — tout est automatisé ✨</p>
             </div>
+
+            <!-- Prérequis -->
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="prereq-card">
+                        <div class="prereq-header">
+                            <i class="bi bi-check2-circle"></i>
+                            <h5>Prérequis</h5>
+                        </div>
+                        <div class="prereq-items">
+                            <div class="prereq-item required">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <div>
+                                    <strong>Python 3.10+</strong>
+                                    <span class="prereq-badge required-badge">Requis</span>
+                                    <p>
+                                        <a href="https://www.python.org/downloads/" target="_blank">Télécharger Python</a>
+                                        &nbsp;— Cochez <em>"Add Python to PATH"</em> lors de l'installation (Windows)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="prereq-item optional">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <div>
+                                    <strong>Nmap</strong>
+                                    <span class="prereq-badge optional-badge">Optionnel</span>
+                                    <p>Nécessaire pour le scan réseau.
+                                        <a href="https://nmap.org/download.html" target="_blank">nmap.org</a>
+                                        / <code>sudo apt-get install nmap</code> (Linux)
+                                        / <code>brew install nmap</code> (macOS)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OS Tabs -->
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <!-- Step 1 -->
-                    <div class="installation-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h5>Installer les dépendances</h5>
-                            <p>Installez Flask et les modules nécessaires :</p>
-                            <div class="code-block">
-                                <code>pip install -r requirements.txt</code>
+                    <div class="os-tabs">
+                        <button class="os-tab active" data-os="windows">
+                            <i class="bi bi-windows"></i> Windows
+                        </button>
+                        <button class="os-tab" data-os="linux">
+                            <i class="bi bi-terminal"></i> Linux
+                        </button>
+                        <button class="os-tab" data-os="macos">
+                            <i class="bi bi-apple"></i> macOS
+                        </button>
+                    </div>
+
+                    <!-- Windows steps -->
+                    <div class="os-content active" id="os-windows">
+                        <!-- Step 1 -->
+                        <div class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h5>Télécharger CyberScan</h5>
+                                <p>Clonez le dépôt ou téléchargez le ZIP depuis GitHub :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>git clone https://github.com/adesperrier/cyberscandashboard.git</code>
+                                </div>
+                                <p class="mt-2 text-muted-small">Ou cliquez sur <strong>Code → Download ZIP</strong> sur la page GitHub et extrayez l'archive.</p>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h5><i class="bi bi-rocket-takeoff-fill text-neon"></i> Lancer en 1 clic</h5>
+                                <p>Accédez au dossier <code>CyberScanSoft</code> et double-cliquez sur :</p>
+                                <div class="oneclick-banner">
+                                    <i class="bi bi-mouse2"></i>
+                                    <span>Double-clic sur <strong>start.bat</strong></span>
+                                </div>
+                                <p class="mt-3 text-muted-small">
+                                    <i class="bi bi-magic"></i>
+                                    Le script vérifie Python, installe automatiquement toutes les dépendances et lance l'application.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h5>Accéder à l'interface</h5>
+                                <p>L'application s'ouvre automatiquement dans votre navigateur. Si ce n'est pas le cas, ouvrez :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>http://127.0.0.1:5000</code>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Step 2 -->
-                    <div class="installation-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h5>Installer Nmap</h5>
-                            <p><strong>Windows :</strong> Téléchargez depuis <a href="https://nmap.org/download.html" target="_blank">nmap.org</a></p>
-                            <div class="code-block">
-                                <code>choco install nmap</code>
+
+                    <!-- Linux steps -->
+                    <div class="os-content" id="os-linux">
+                        <!-- Step 1 -->
+                        <div class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h5>Télécharger CyberScan</h5>
+                                <p>Clonez le dépôt :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>git clone https://github.com/adesperrier/cyberscandashboard.git</code>
+                                </div>
                             </div>
-                            <p class="mt-3"><strong>Linux (Ubuntu/Debian) :</strong></p>
-                            <div class="code-block">
-                                <code>sudo apt-get install nmap</code>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h5>Lancer le setup</h5>
+                                <p>Depuis le dossier <code>CyberScanSoft</code>, exécutez :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>cd cyberscandashboard/CyberScanSoft &amp;&amp; python3 setup.py</code>
+                                </div>
+                                <p class="mt-3 text-muted-small">
+                                    <i class="bi bi-magic"></i>
+                                    Le script installe automatiquement Flask, python-nmap et toutes les dépendances, puis lance l'application.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h5>Accéder à l'interface</h5>
+                                <p>Ouvrez votre navigateur :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>http://127.0.0.1:5000</code>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Step 3 -->
-                    <div class="installation-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h5>Lancer l'application</h5>
-                            <p>Démarrez le serveur Flask :</p>
-                            <div class="code-block">
-                                <code>python app.py</code>
+
+                    <!-- macOS steps -->
+                    <div class="os-content" id="os-macos">
+                        <!-- Step 1 -->
+                        <div class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h5>Télécharger CyberScan</h5>
+                                <p>Clonez le dépôt :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>git clone https://github.com/adesperrier/cyberscandashboard.git</code>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h5>Lancer le setup</h5>
+                                <p>Depuis le dossier <code>CyberScanSoft</code>, exécutez :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>cd cyberscandashboard/CyberScanSoft &amp;&amp; python3 setup.py</code>
+                                </div>
+                                <p class="mt-3 text-muted-small">
+                                    <i class="bi bi-magic"></i>
+                                    Le script installe automatiquement Flask, python-nmap et toutes les dépendances, puis lance l'application.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h5>Accéder à l'interface</h5>
+                                <p>Ouvrez votre navigateur :</p>
+                                <div class="code-block">
+                                    <button class="copy-btn" title="Copier"><i class="bi bi-clipboard"></i></button>
+                                    <code>http://127.0.0.1:5000</code>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Step 4 -->
-                    <div class="installation-step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h5>Accéder à l'interface</h5>
-                            <p>Ouvrez votre navigateur :</p>
-                            <div class="code-block">
-                                <code>http://127.0.0.1:5000</code>
+
+                    <!-- Troubleshooting -->
+                    <div class="troubleshoot-section mt-5">
+                        <div class="troubleshoot-header" data-bs-toggle="collapse" data-bs-target="#troubleshootContent" role="button">
+                            <i class="bi bi-tools"></i> Dépannage &amp; FAQ
+                            <i class="bi bi-chevron-down ms-auto"></i>
+                        </div>
+                        <div class="collapse" id="troubleshootContent">
+                            <div class="troubleshoot-body">
+                                <div class="troubleshoot-item">
+                                    <strong>« Python n'est pas reconnu »</strong>
+                                    <p>Réinstallez Python en cochant <em>"Add Python to PATH"</em> lors de l'installation. Redémarrez ensuite votre terminal.</p>
+                                </div>
+                                <div class="troubleshoot-item">
+                                    <strong>« Port déjà utilisé »</strong>
+                                    <p><code>setup.py</code> recherche automatiquement le prochain port disponible (5000–9000). Consultez la console pour l'URL exacte.</p>
+                                </div>
+                                <div class="troubleshoot-item">
+                                    <strong>« Nmap introuvable »</strong>
+                                    <p>L'application fonctionne sans Nmap, mais le scan réseau sera désactivé. Installez Nmap pour activer toutes les fonctionnalités.</p>
+                                </div>
+                                <div class="troubleshoot-item">
+                                    <strong>« Module not found »</strong>
+                                    <p>Relancez <code>setup.py</code> / <code>start.bat</code> — il installe automatiquement toutes les dépendances.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
