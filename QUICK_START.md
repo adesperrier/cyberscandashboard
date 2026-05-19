@@ -5,14 +5,14 @@
 ### Windows
 ```bash
 cd CyberScanSoft
-run.bat
+start.bat
 ```
 
 ### Linux / Mac
 ```bash
 cd CyberScanSoft
-chmod +x run.sh
-./run.sh
+chmod +x setup.py
+python3 setup.py
 ```
 
 **C'est tout!** L'application démarre automatiquement.
@@ -39,13 +39,13 @@ cd cyberscandashboard
 Windows:
 ```bash
 cd CyberScanSoft
-run.bat
+start.bat
 ```
 
 Linux/Mac:
 ```bash
 cd CyberScanSoft
-./run.sh
+python3 setup.py
 ```
 
 **3. C'est prêt!**
@@ -75,7 +75,7 @@ cd CyberScanSoft
 - Windows: réinstallez Python
 
 **"Nmap introuvable"**
-- Le scan réseau ne fonctionnera pas
+- Le scan réseau ne fonctionnera pas sans lui
 - Installez Nmap depuis https://nmap.org
 
 ---
@@ -88,3 +88,4 @@ cd CyberScanSoft
 ---
 
 **Version**: 1.0.0 ✅
+
