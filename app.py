@@ -12,11 +12,32 @@ from datetime import datetime
 import nmap
 from flask import Flask, jsonify, render_template, request
 
+
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-change-me")
 
 MAX_NETWORK_HOSTS = 1024
-HISTORY = deque(maxlen=5)
+# Charger l'historique des scans depuis le dossier 'scans' au démarrage
+import json
+from glob import glob
+HISTORY = deque(maxlen=100)
+scans_dir = os.path.join(os.path.dirname(__file__), "scans")
+if os.path.isdir(scans_dir):
+    scan_files = sorted(glob(os.path.join(scans_dir, "*.json")), key=os.path.getmtime, reverse=True)
+    for scan_file in scan_files:
+        try:
+            with open(scan_file, "r", encoding="utf-8") as f:
+                scan = json.load(f)
+                HISTORY.appendleft({
+                    "scan_id": scan.get("scan_id"),
+                    "target": scan.get("target"),
+                    "started_at": scan.get("started_at"),
+                    "elapsed": scan.get("elapsed"),
+                    "hosts": len(scan.get("hosts", [])),
+                    "open_ports": scan.get("open_ports", 0),
+                })
+        except Exception:
+            pass
 
 DOMAIN_RE = re.compile(
     r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)"
@@ -350,6 +371,10 @@ def check_vulnerabilities(service: str, product: str, version: str) -> list[dict
 
 
 def run_scan(target: str, scan_preset: str = "quick", custom_ports: str = "") -> dict:
+    import json
+    scans_dir = os.path.join(os.path.dirname(__file__), "scans")
+    os.makedirs(scans_dir, exist_ok=True)
+
     if scan_preset not in SCAN_PRESETS and not custom_ports:
         scan_preset = "quick"
 
@@ -408,7 +433,7 @@ def run_scan(target: str, scan_preset: str = "quick", custom_ports: str = "") ->
             }
         )
 
-    return {
+    scan_result = {
         "scan_id": uuid.uuid4().hex,
         "target": target,
         "started_at": started.strftime("%Y-%m-%d %H:%M:%S"),
@@ -418,6 +443,13 @@ def run_scan(target: str, scan_preset: str = "quick", custom_ports: str = "") ->
         "hosts": hosts,
         "open_ports": total_open_ports,
     }
+
+    # Enregistrer le scan dans le dossier 'scans' sous forme de fichier JSON
+    scan_file = os.path.join(scans_dir, f"{scan_result['scan_id']}.json")
+    with open(scan_file, "w", encoding="utf-8") as f:
+        json.dump(scan_result, f, ensure_ascii=False, indent=2)
+
+    return scan_result
 
 
 @app.route("/", methods=["GET", "POST"])

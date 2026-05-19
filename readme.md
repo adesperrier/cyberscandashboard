@@ -67,7 +67,7 @@ sudo pacman -S nmap
 Après l'installation de Nmap, configure la variable d'environnement :
 
 ```powershell
-setx NMAP_PATH "C:\Program Files (x86)\Nmap\nmap.exe"
+.\setx NMAP_PATH "C:\Program Files (x86)\Nmap\nmap.exe"
 ```
 
 **Note** : Redémarre PowerShell ou réouvre ton terminal après cette commande.
