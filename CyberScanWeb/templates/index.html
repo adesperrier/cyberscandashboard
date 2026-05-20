@@ -53,9 +53,9 @@
                 Outil de scan réseau professionnel pour les pentesters, administrateurs et chercheurs en cybersécurité.
             </p>
             <div class="hero-cta mt-5">
-                <button class="btn btn-primary-neon btn-lg" data-bs-toggle="modal" data-bs-target="#downloadModal">
-                    <i class="bi bi-download"></i> Télécharger
-                </button>
+                <a href="#installation" class="btn btn-primary-neon btn-lg scroll-link">
+                    <i class="bi bi-arrow-down"></i> Guide d'Installation
+                </a>
                 <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="btn btn-outline-primary btn-lg ms-3">
                     <i class="bi bi-github"></i> Voir sur GitHub
                 </a>
@@ -876,105 +876,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- ==================== DOWNLOAD MODAL ==================== -->
-    <div class="modal fade" id="downloadModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content bg-dark-modal">
-                <div class="modal-header border-bottom-neon">
-                    <h5 class="modal-title">
-                        <i class="bi bi-download"></i> Télécharger CyberScan Dashboard
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="download-info mb-4">
-                        <div class="alert alert-info alert-dark-neon" role="alert">
-                            <i class="bi bi-info-circle"></i> 
-                            <strong>Important:</strong> Vous téléchargerez uniquement le software <strong>CyberScan Dashboard</strong> (dossier CyberScanSoft), prêt à être lancé.
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <!-- Option 1: Télécharger ZIP -->
-                        <div class="col-12">
-                            <div class="download-option">
-                                <h6 class="mb-2">
-                                    <i class="bi bi-file-earmark-zip"></i> Option 1: Télécharger (ZIP)
-                                </h6>
-                                <p class="small text-muted mb-3">
-                                    Téléchargez le software complet en fichier ZIP, décompressez et lancez.
-                                </p>
-                                <a href="/download-cyberscan" class="btn btn-primary-neon btn-sm">
-                                    <i class="bi bi-download"></i> Télécharger CyberScan.zip
-                                </a>
-                                <p class="small text-muted mt-2">
-                                    <i class="bi bi-info-circle"></i> Taille: ~2MB
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Option 2: GitHub Clone -->
-                        <div class="col-12">
-                            <div class="download-option">
-                                <h6 class="mb-2">
-                                    <i class="bi bi-github"></i> Option 2: Cloner depuis GitHub
-                                </h6>
-                                <p class="small text-muted mb-3">
-                                    Clonez le projet complet et utilisez le dossier <code>CyberScanSoft</code>.
-                                </p>
-                                <div class="code-block" style="margin: 0.5rem 0;">
-                                    <code>git clone https://github.com/adesperrier/cyberscandashboard.git</code>
-                                    <button class="btn-copy-code" onclick="copyToClipboard('git clone https://github.com/adesperrier/cyberscandashboard.git')">
-                                        <i class="bi bi-clipboard"></i>
-                                    </button>
-                                </div>
-                                <p class="small text-muted mt-2">
-                                    Puis: <code>cd cyberscandashboard/CyberScanSoft</code>
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Option 3: Instructions Directes -->
-                        <div class="col-12">
-                            <div class="download-option">
-                                <h6 class="mb-2">
-                                    <i class="bi bi-arrow-right"></i> Option 3: Déjà sur la page d'installation?
-                                </h6>
-                                <p class="small text-muted mb-3">
-                                    Vous pouvez suivre le guide d'installation ci-dessous avec les instructions détaillées pour votre OS.
-                                </p>
-                                <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal" onclick="document.querySelector('#installation').scrollIntoView({ behavior: 'smooth' })">
-                                    <i class="bi bi-chevron-down"></i> Aller au Guide d'Installation
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="my-4" style="border-color: var(--border-neon);">
-
-                    <div class="setup-info">
-                        <h6 class="mb-3">
-                            <i class="bi bi-question-circle"></i> Prochaines Étapes Après Téléchargement
-                        </h6>
-                        <ol class="small">
-                            <li><strong>Décompressez</strong> le fichier ZIP</li>
-                            <li><strong>Ouvrez</strong> le dossier <code>CyberScanSoft</code></li>
-                            <li><strong>Windows:</strong> Double-cliquez <code>start.bat</code></li>
-                            <li><strong>Linux/Mac:</strong> Lancez <code>python3 setup.py</code></li>
-                            <li><strong>Profitez!</strong> Le navigateur s'ouvre automatiquement</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="modal-footer border-top-neon">
-                    <a href="https://github.com/adesperrier/cyberscandashboard" target="_blank" class="btn btn-outline-light">
-                        <i class="bi bi-github"></i> Voir sur GitHub
-                    </a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
