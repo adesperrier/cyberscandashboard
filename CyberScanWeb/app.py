@@ -7,7 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/download/CyberScan.exe')
+@app.route('/Softexe/CyberScan.exe')
 def download_exe():
     exe_path = os.path.join(os.path.dirname(__file__), '..', 'Softexe', 'CyberScan.exe')
     if os.path.exists(exe_path):
