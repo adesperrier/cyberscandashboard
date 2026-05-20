@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, redirect
 import os
 
 app = Flask(__name__)
@@ -9,17 +9,11 @@ def home():
 
 @app.route('/Softexe/CyberScan.exe')
 def download_exe():
-    exe_path = os.path.join(os.path.dirname(__file__), '..', 'Softexe', 'CyberScan.exe')
-    if os.path.exists(exe_path):
-        return send_file(exe_path, as_attachment=True, download_name='CyberScan.exe')
-    return "File not found", 404
+    return redirect('https://github.com/adesperrier/cyberscandashboard/releases/download/dev/CyberScan.zip')
 
 @app.route('/download/CyberScan.exe')
 def download_exe_alt():
-    exe_path = os.path.join(os.path.dirname(__file__), '..', 'Softexe', 'CyberScan.exe')
-    if os.path.exists(exe_path):
-        return send_file(exe_path, as_attachment=True, download_name='CyberScan.exe')
-    return "File not found", 404
+    return redirect('https://github.com/adesperrier/cyberscandashboard/releases/download/dev/CyberScan.zip')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
