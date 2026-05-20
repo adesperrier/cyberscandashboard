@@ -14,5 +14,12 @@ def download_exe():
         return send_file(exe_path, as_attachment=True, download_name='CyberScan.exe')
     return "File not found", 404
 
+@app.route('/download/CyberScan.exe')
+def download_exe_alt():
+    exe_path = os.path.join(os.path.dirname(__file__), '..', 'Softexe', 'CyberScan.exe')
+    if os.path.exists(exe_path):
+        return send_file(exe_path, as_attachment=True, download_name='CyberScan.exe')
+    return "File not found", 404
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
