@@ -312,53 +312,384 @@
                 <h2>Guide d'Installation</h2>
                 <p class="section-subtitle">Démarrez avec CyberScan en quelques minutes</p>
             </div>
+
+            <!-- 🚀 QUICK START SECTION -->
+            <div class="row mb-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="quick-start-banner">
+                        <div class="quick-start-header">
+                            <i class="bi bi-lightning-fill"></i>
+                            <h3>Démarrage Ultra-Rapide</h3>
+                        </div>
+                        <p class="quick-start-subtitle">Lancez CyberScan en 10 secondes</p>
+                        
+                        <div class="row g-4 mt-4">
+                            <!-- Windows -->
+                            <div class="col-md-6">
+                                <div class="quick-start-card windows-card">
+                                    <div class="os-badge windows-badge">
+                                        <i class="bi bi-windows"></i> Windows
+                                    </div>
+                                    <h5>Un clic c'est tout !</h5>
+                                    <div class="quick-instruction">
+                                        <p class="instruction-step">
+                                            <span class="step-dot">1</span>
+                                            <strong>Ouvrez le dossier</strong> CyberScanSoft
+                                        </p>
+                                        <p class="instruction-step mt-2">
+                                            <span class="step-dot">2</span>
+                                            <strong>Double-cliquez</strong> sur <code>start.bat</code>
+                                        </p>
+                                        <p class="instruction-step mt-2">
+                                            <span class="step-dot">✓</span>
+                                            C'est parti ! Le navigateur s'ouvre automatiquement
+                                        </p>
+                                    </div>
+                                    <button class="btn btn-sm btn-success mt-3 w-100" onclick="copyToClipboard('Ouvrez CyberScanSoft et double-cliquez start.bat')">
+                                        <i class="bi bi-clipboard"></i> Copier les étapes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Linux / Mac -->
+                            <div class="col-md-6">
+                                <div class="quick-start-card linux-card">
+                                    <div class="os-badge linux-badge">
+                                        <i class="bi bi-terminal"></i> Linux / macOS
+                                    </div>
+                                    <h5>Commande simple</h5>
+                                    <div class="quick-instruction">
+                                        <div class="code-block-quick">
+                                            <code>cd CyberScanSoft && python3 setup.py</code>
+                                            <button class="btn-copy" onclick="copyToClipboard('cd CyberScanSoft && python3 setup.py')" title="Copier">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                        <p class="mt-3 small text-muted">✓ Installation automatique & lancement</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REQUIREMENTS CHECK -->
+            <div class="row mb-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="requirements-section">
+                        <h4 class="requirements-title">
+                            <i class="bi bi-check2-circle"></i> Vérifiez vos Prérequis
+                        </h4>
+                        <div class="requirements-grid">
+                            <div class="requirement-item python-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-snake"></i>
+                                </div>
+                                <h6>Python 3.10+</h6>
+                                <p class="small">Requis</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" onclick="checkPython()">
+                                    <i class="bi bi-question-circle"></i> Comment vérifier
+                                </button>
+                            </div>
+                            <div class="requirement-item nmap-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-diagram-3"></i>
+                                </div>
+                                <h6>Nmap</h6>
+                                <p class="small">Optionnel (pour scan)</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" data-bs-toggle="modal" data-bs-target="#nmapModal">
+                                    <i class="bi bi-download"></i> Installer
+                                </button>
+                            </div>
+                            <div class="requirement-item pip-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-box"></i>
+                                </div>
+                                <h6>Dépendances</h6>
+                                <p class="small">Auto-installées</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" disabled>
+                                    <i class="bi bi-check-circle"></i> Automatique
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILED INSTALLATION -->
             <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <!-- Step 1 -->
-                    <div class="installation-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h5>Installer les dépendances</h5>
-                            <p>Installez Flask et les modules nécessaires :</p>
-                            <div class="code-block">
-                                <code>pip install -r requirements.txt</code>
+                <div class="col-lg-10 mx-auto">
+                    <h4 class="installation-subtitle mb-4">
+                        <i class="bi bi-gear"></i> Installation Détaillée
+                    </h4>
+                    
+                    <!-- OS Tabs -->
+                    <ul class="nav nav-tabs installation-tabs mb-4" id="osTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active windows-tab" id="windows-tab" data-bs-toggle="tab" data-bs-target="#windows-install" type="button">
+                                <i class="bi bi-windows"></i> Windows
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link linux-tab" id="linux-tab" data-bs-toggle="tab" data-bs-target="#linux-install" type="button">
+                                <i class="bi bi-ubuntu"></i> Linux / Ubuntu
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link mac-tab" id="mac-tab" data-bs-toggle="tab" data-bs-target="#mac-install" type="button">
+                                <i class="bi bi-apple"></i> macOS
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content" id="osTabContent">
+                        <!-- Windows -->
+                        <div class="tab-pane fade show active" id="windows-install" role="tabpanel">
+                            <div class="installation-steps">
+                                <div class="installation-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h5>Télécharger le projet</h5>
+                                        <p>Clonez ou téléchargez le projet depuis GitHub :</p>
+                                        <div class="code-block">
+                                            <code>git clone https://github.com/adesperrier/cyberscandashboard.git</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('git clone https://github.com/adesperrier/cyberscandashboard.git')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h5>Accéder au dossier</h5>
+                                        <p>Naviguez vers le dossier CyberScanSoft :</p>
+                                        <div class="code-block">
+                                            <code>cd cyberscandashboard/CyberScanSoft</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('cd cyberscandashboard/CyberScanSoft')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step highlight-step">
+                                    <div class="step-number" style="background: linear-gradient(135deg, #00ff88, #00d9ff);">✓</div>
+                                    <div class="step-content">
+                                        <h5>🎯 Lancer l'application (1 clic)</h5>
+                                        <p><strong>Option A (RECOMMANDÉE) - Interface graphique :</strong></p>
+                                        <div class="code-block">
+                                            <code>Double-cliquez sur start.bat</code>
+                                        </div>
+                                        <p class="mt-3"><strong>Option B - Ligne de commande :</strong></p>
+                                        <div class="code-block">
+                                            <code>python setup.py</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('python setup.py')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Linux -->
+                        <div class="tab-pane fade" id="linux-install" role="tabpanel">
+                            <div class="installation-steps">
+                                <div class="installation-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h5>Installer les dépendances système</h5>
+                                        <div class="code-block">
+                                            <code>sudo apt-get update && sudo apt-get install python3 python3-pip nmap</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('sudo apt-get update && sudo apt-get install python3 python3-pip nmap')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h5>Télécharger le projet</h5>
+                                        <div class="code-block">
+                                            <code>git clone https://github.com/adesperrier/cyberscandashboard.git && cd cyberscandashboard/CyberScanSoft</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('git clone https://github.com/adesperrier/cyberscandashboard.git && cd cyberscandashboard/CyberScanSoft')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step highlight-step">
+                                    <div class="step-number" style="background: linear-gradient(135deg, #00ff88, #00d9ff);">✓</div>
+                                    <div class="step-content">
+                                        <h5>🎯 Lancer l'application</h5>
+                                        <div class="code-block">
+                                            <code>python3 setup.py</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('python3 setup.py')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                        <p class="mt-2 small"><i class="bi bi-info-circle"></i> L'application démarre automatiquement sur http://127.0.0.1:5000</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- macOS -->
+                        <div class="tab-pane fade" id="mac-install" role="tabpanel">
+                            <div class="installation-steps">
+                                <div class="installation-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h5>Installer les dépendances système</h5>
+                                        <p>Assurez-vous d'avoir Homebrew installé, puis :</p>
+                                        <div class="code-block">
+                                            <code>brew install python3 nmap</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('brew install python3 nmap')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h5>Télécharger le projet</h5>
+                                        <div class="code-block">
+                                            <code>git clone https://github.com/adesperrier/cyberscandashboard.git && cd cyberscandashboard/CyberScanSoft</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('git clone https://github.com/adesperrier/cyberscandashboard.git && cd cyberscandashboard/CyberScanSoft')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="installation-step highlight-step">
+                                    <div class="step-number" style="background: linear-gradient(135deg, #00ff88, #00d9ff);">✓</div>
+                                    <div class="step-content">
+                                        <h5>🎯 Lancer l'application</h5>
+                                        <div class="code-block">
+                                            <code>python3 setup.py</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('python3 setup.py')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                        <p class="mt-2 small"><i class="bi bi-info-circle"></i> L'application démarre automatiquement sur http://127.0.0.1:5000</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Step 2 -->
-                    <div class="installation-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h5>Installer Nmap</h5>
-                            <p><strong>Windows :</strong> Téléchargez depuis <a href="https://nmap.org/download.html" target="_blank">nmap.org</a></p>
-                            <div class="code-block">
-                                <code>choco install nmap</code>
+                </div>
+            </div>
+
+            <!-- TROUBLESHOOTING -->
+            <div class="row mt-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="troubleshooting-section">
+                        <h4 class="troubleshooting-title">
+                            <i class="bi bi-question-circle"></i> Dépannage & FAQ
+                        </h4>
+                        <div class="accordion" id="troubleshootingAccordion">
+                            <div class="accordion-item accordion-item-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                        <i class="bi bi-exclamation-triangle"></i> "Python n'est pas reconnu" (Windows)
+                                    </button>
+                                </h2>
+                                <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Cause :</strong> Python n'est pas dans le PATH système.</p>
+                                        <p><strong>Solution :</strong></p>
+                                        <ol>
+                                            <li>Réinstallez Python depuis <a href="https://www.python.org" target="_blank">python.org</a></li>
+                                            <li><strong>⚠️ IMPORTANT :</strong> Cochez la case "Add Python to PATH" pendant l'installation</li>
+                                            <li>Relancez votre terminal/CMD après l'installation</li>
+                                            <li>Testez : <code>python --version</code></li>
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="mt-3"><strong>Linux (Ubuntu/Debian) :</strong></p>
-                            <div class="code-block">
-                                <code>sudo apt-get install nmap</code>
+                            <div class="accordion-item accordion-item-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                        <i class="bi bi-exclamation-triangle"></i> "ModuleNotFoundError: No module named 'flask'"
+                                    </button>
+                                </h2>
+                                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Cause :</strong> Les dépendances Python ne sont pas installées.</p>
+                                        <p><strong>Solution :</strong> Installez-les manuellement :</p>
+                                        <div class="code-block">
+                                            <code>pip install -r requirements.txt</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('pip install -r requirements.txt')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="installation-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h5>Lancer l'application</h5>
-                            <p>Démarrez le serveur Flask :</p>
-                            <div class="code-block">
-                                <code>python app.py</code>
+                            <div class="accordion-item accordion-item-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                        <i class="bi bi-exclamation-triangle"></i> "Port 5000 already in use"
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Cause :</strong> Un autre processus utilise le port 5000.</p>
+                                        <p><strong>Solution :</strong> setup.py trouve automatiquement un port libre (5000-9000).</p>
+                                        <p>Si le problème persiste, tuez le processus :</p>
+                                        <div class="code-block">
+                                            <code>lsof -i :5000 | grep -v PID | awk '{print $2}' | xargs kill -9</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('lsof -i :5000 | grep -v PID | awk \\''{print $2}\\'' | xargs kill -9')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Step 4 -->
-                    <div class="installation-step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h5>Accéder à l'interface</h5>
-                            <p>Ouvrez votre navigateur :</p>
-                            <div class="code-block">
-                                <code>http://127.0.0.1:5000</code>
+                            <div class="accordion-item accordion-item-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                                        <i class="bi bi-exclamation-triangle"></i> "Nmap not found" - Scanning ne fonctionne pas
+                                    </button>
+                                </h2>
+                                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Cause :</strong> Nmap n'est pas installé.</p>
+                                        <p><strong>L'app fonctionne</strong> mais le scan réseau ne marche pas.</p>
+                                        <p><strong>Solution :</strong> Installez Nmap :</p>
+                                        <button class="btn btn-sm btn-outline-light mb-3" data-bs-toggle="modal" data-bs-target="#nmapModal">
+                                            <i class="bi bi-download"></i> Voir comment installer Nmap
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item accordion-item-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                                        <i class="bi bi-question-circle"></i> Comment accéder à l'interface après lancement ?
+                                    </button>
+                                </h2>
+                                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>L'application ouvre <strong>automatiquement</strong> votre navigateur sur :</p>
+                                        <div class="code-block">
+                                            <code>http://127.0.0.1:5000</code>
+                                            <button class="btn-copy-code" onclick="copyToClipboard('http://127.0.0.1:5000')">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+                                        </div>
+                                        <p class="mt-2">Si le navigateur ne s'ouvre pas :</p>
+                                        <ol>
+                                            <li>Ouvrez manuellement votre navigateur</li>
+                                            <li>Collez l'URL ci-dessus</li>
+                                            <li>Appuyez sur Entrée</li>
+                                        </ol>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -366,6 +697,76 @@
             </div>
         </div>
     </section>
+
+    <!-- NMAP MODAL -->
+    <div class="modal fade" id="nmapModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark-modal">
+                <div class="modal-header border-bottom-neon">
+                    <h5 class="modal-title">
+                        <i class="bi bi-diagram-3"></i> Installer Nmap
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h6 class="mb-3">
+                                <i class="bi bi-windows"></i> Windows
+                            </h6>
+                            <p class="small"><strong>Téléchargez directement :</strong></p>
+                            <a href="https://nmap.org/download.html" target="_blank" class="btn btn-sm btn-outline-light mb-3">
+                                <i class="bi bi-download"></i> Télécharger Nmap
+                            </a>
+                            <p class="small"><strong>Ou avec Chocolatey :</strong></p>
+                            <div class="code-block">
+                                <code>choco install nmap</code>
+                                <button class="btn-copy-code" onclick="copyToClipboard('choco install nmap')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h6 class="mb-3">
+                                <i class="bi bi-ubuntu"></i> Linux (Ubuntu/Debian)
+                            </h6>
+                            <div class="code-block">
+                                <code>sudo apt-get install nmap</code>
+                                <button class="btn-copy-code" onclick="copyToClipboard('sudo apt-get install nmap')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h6 class="mb-3">
+                                <i class="bi bi-apple"></i> macOS
+                            </h6>
+                            <div class="code-block">
+                                <code>brew install nmap</code>
+                                <button class="btn-copy-code" onclick="copyToClipboard('brew install nmap')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h6 class="mb-3">
+                                <i class="bi bi-info-circle"></i> Vérifier l'installation
+                            </h6>
+                            <div class="code-block">
+                                <code>nmap --version</code>
+                                <button class="btn-copy-code" onclick="copyToClipboard('nmap --version')">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-neon">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== ROADMAP ==================== -->
     <section id="roadmap" class="roadmap-section section-padding">

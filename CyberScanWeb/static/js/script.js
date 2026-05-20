@@ -153,3 +153,85 @@ if ('IntersectionObserver' in window) {
         observer.observe(img);
     });
 }
+
+// ==================== INSTALLATION FUNCTIONS ====================
+
+// Copy to clipboard with visual feedback
+function copyToClipboard(text) {
+    // Use modern Clipboard API
+    navigator.clipboard.writeText(text).then(() => {
+        showCopyFeedback(event.target);
+    }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCopyFeedback(event.target);
+    });
+}
+
+// Show visual feedback after copying
+function showCopyFeedback(element) {
+    const originalText = element.innerHTML;
+    element.innerHTML = '<i class="bi bi-check-circle"></i> Copié !';
+    element.style.backgroundColor = 'rgba(0, 255, 136, 0.2)';
+    
+    setTimeout(() => {
+        element.innerHTML = originalText;
+        element.style.backgroundColor = '';
+    }, 2000);
+}
+
+// Auto-detect OS and select appropriate tab
+function detectAndSelectOS() {
+    const userAgent = navigator.userAgent;
+    let osTab = 'windows-tab';
+    
+    if (userAgent.includes('Windows')) {
+        osTab = 'windows-tab';
+    } else if (userAgent.includes('Linux')) {
+        osTab = 'linux-tab';
+    } else if (userAgent.includes('Mac')) {
+        osTab = 'mac-tab';
+    }
+    
+    const tab = document.getElementById(osTab);
+    if (tab) {
+        const bsTab = new bootstrap.Tab(tab);
+        bsTab.show();
+    }
+}
+
+// Check Python (basic check message)
+function checkPython() {
+    alert('Pour vérifier votre version de Python, ouvrez votre terminal et tapez:\n\npython --version\n\nOu sur Linux/Mac:\npython3 --version\n\nVous devez avoir Python 3.10 ou plus récent.');
+}
+
+// Initialize installation section
+function initInstallationSection() {
+    // Auto-select OS on page load
+    window.addEventListener('load', () => {
+        setTimeout(detectAndSelectOS, 500);
+    });
+    
+    // Add copy functionality to all code blocks
+    const copyButtons = document.querySelectorAll('.btn-copy, .btn-copy-code');
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const codeBlock = this.closest('.code-block') || this.closest('.code-block-quick');
+            if (codeBlock) {
+                const code = codeBlock.querySelector('code').textContent;
+                copyToClipboard(code);
+            }
+        });
+    });
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    initInstallationSection();
+});
