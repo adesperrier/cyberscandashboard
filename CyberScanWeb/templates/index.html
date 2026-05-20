@@ -316,6 +316,51 @@
                 <p class="section-subtitle">Démarrez avec CyberScan en quelques minutes</p>
             </div>
 
+            
+
+            <!-- REQUIREMENTS CHECK -->
+            <div class="row mb-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="requirements-section">
+                        <h4 class="requirements-title">
+                            <i class="bi bi-check2-circle"></i> Vérifiez vos Prérequis
+                        </h4>
+                        <div class="requirements-grid">
+                            <div class="requirement-item python-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-snake"></i>
+                                </div>
+                                <h6>Python 3.10+</h6>
+                                <p class="small">Requis</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" onclick="checkPython()">
+                                    <i class="bi bi-question-circle"></i> Comment vérifier
+                                </button>
+                            </div>
+                            <div class="requirement-item nmap-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-diagram-3"></i>
+                                </div>
+                                <h6>Nmap</h6>
+                                <p class="small">Optionnel (pour scan)</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" data-bs-toggle="modal" data-bs-target="#nmapModal">
+                                    <i class="bi bi-download"></i> Installer
+                                </button>
+                            </div>
+                            <div class="requirement-item pip-req">
+                                <div class="req-icon">
+                                    <i class="bi bi-box"></i>
+                                </div>
+                                <h6>Dépendances</h6>
+                                <p class="small">Auto-installées</p>
+                                <button class="btn btn-xs btn-outline-light mt-2" disabled>
+                                    <i class="bi bi-check-circle"></i> Automatique
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 🚀 QUICK START SECTION -->
             <div class="row mb-5">
                 <div class="col-lg-10 mx-auto">
@@ -396,49 +441,6 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- REQUIREMENTS CHECK -->
-            <div class="row mb-5">
-                <div class="col-lg-10 mx-auto">
-                    <div class="requirements-section">
-                        <h4 class="requirements-title">
-                            <i class="bi bi-check2-circle"></i> Vérifiez vos Prérequis
-                        </h4>
-                        <div class="requirements-grid">
-                            <div class="requirement-item python-req">
-                                <div class="req-icon">
-                                    <i class="bi bi-snake"></i>
-                                </div>
-                                <h6>Python 3.10+</h6>
-                                <p class="small">Requis</p>
-                                <button class="btn btn-xs btn-outline-light mt-2" onclick="checkPython()">
-                                    <i class="bi bi-question-circle"></i> Comment vérifier
-                                </button>
-                            </div>
-                            <div class="requirement-item nmap-req">
-                                <div class="req-icon">
-                                    <i class="bi bi-diagram-3"></i>
-                                </div>
-                                <h6>Nmap</h6>
-                                <p class="small">Optionnel (pour scan)</p>
-                                <button class="btn btn-xs btn-outline-light mt-2" data-bs-toggle="modal" data-bs-target="#nmapModal">
-                                    <i class="bi bi-download"></i> Installer
-                                </button>
-                            </div>
-                            <div class="requirement-item pip-req">
-                                <div class="req-icon">
-                                    <i class="bi bi-box"></i>
-                                </div>
-                                <h6>Dépendances</h6>
-                                <p class="small">Auto-installées</p>
-                                <button class="btn btn-xs btn-outline-light mt-2" disabled>
-                                    <i class="bi bi-check-circle"></i> Automatique
-                                </button>
                             </div>
                         </div>
                     </div>
