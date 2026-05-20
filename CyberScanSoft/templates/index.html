@@ -68,11 +68,12 @@
                         <table class="table-modern" id="resultsTable">
                             <thead>
                                 <tr>
-                                    <th>Port</th>
-                                    <th>State</th>
-                                    <th>Service</th>
-                                    <th>Product</th>
-                                    <th>Risk</th>
+                                    <th onclick="sortResults('host')">Host <span class="sort-indicator"></span></th>
+                                    <th onclick="sortResults('port')">Port <span class="sort-indicator"></span></th>
+                                    <th onclick="sortResults('state')">State <span class="sort-indicator"></span></th>
+                                    <th onclick="sortResults('service')">Service <span class="sort-indicator"></span></th>
+                                    <th onclick="sortResults('product')">Product <span class="sort-indicator"></span></th>
+                                    <th onclick="sortResults('risk')">Risk <span class="sort-indicator"></span></th>
                                     <th>Details</th>
                                 </tr>
                             </thead>

@@ -535,6 +535,18 @@ body {
     background: linear-gradient(90deg, #ff006e, #00d9ff);
 }
 
+.download-card::before {
+    background: linear-gradient(90deg, #00d9ff, #00ff88);
+}
+
+.requirements-card::before {
+    background: linear-gradient(90deg, #ffaa00, #ff6b00);
+}
+
+.launch-card::before {
+    background: linear-gradient(90deg, #00ff88, #00d9ff);
+}
+
 .os-badge {
     display: inline-block;
     padding: 0.5rem 1rem;
@@ -558,6 +570,24 @@ body {
     background: rgba(255, 0, 110, 0.15);
     border: 1px solid #ff006e;
     color: #ff006e;
+}
+
+.download-badge {
+    background: rgba(0, 217, 255, 0.15);
+    border: 1px solid #00d9ff;
+    color: #00d9ff;
+}
+
+.requirements-badge {
+    background: rgba(255, 170, 0, 0.15);
+    border: 1px solid #ffaa00;
+    color: #ffaa00;
+}
+
+.launch-badge {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid #00ff88;
+    color: #00ff88;
 }
 
 .quick-start-card h5 {

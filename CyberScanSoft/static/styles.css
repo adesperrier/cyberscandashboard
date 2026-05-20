@@ -74,14 +74,18 @@ body {
 
 .form-control,
 .form-select {
-    background-color: rgba(5, 7, 18, 0.8);
+    background-color: rgba(20, 25, 60, 0.9);
     border: 1px solid #00d9ff;
     color: #e0e0e0;
 }
 
+.form-control::placeholder {
+    color: #999;
+}
+
 .form-control:focus,
 .form-select:focus {
-    background-color: rgba(5, 7, 18, 0.9);
+    background-color: rgba(30, 35, 70, 0.95);
     border-color: #00ff88;
     box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
     color: #e0e0e0;
@@ -101,6 +105,30 @@ body {
 .btn-primary-neon:hover {
     box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
     transform: translateY(-2px);
+}
+
+.btn-primary-neon:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(10, 14, 39, 0.3);
+    border-top: 2px solid #0a0e27;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .badge.bg-primary-neon {
@@ -139,6 +167,30 @@ body {
     padding: 1rem;
     font-weight: 600;
     text-align: left;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.table-modern th:hover {
+    background-color: rgba(0, 217, 255, 0.15);
+    padding-left: 0.8rem;
+}
+
+.sort-indicator {
+    display: inline-block;
+    margin-left: 0.3rem;
+    font-size: 0.8em;
+    color: #00ff88;
+    min-width: 1.2em;
+}
+
+.sort-indicator.active-asc::after {
+    content: '▲';
+}
+
+.sort-indicator.active-desc::after {
+    content: '▼';
 }
 
 .table-modern td {
@@ -212,6 +264,23 @@ body {
     color: #0a0e27;
 }
 
+.btn-delete {
+    background-color: transparent;
+    border: 1px solid #ff006e;
+    color: #ff006e;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+    margin-left: 0.3rem;
+}
+
+.btn-delete:hover {
+    background-color: #ff006e;
+    color: #fff;
+}
+
 .modal-dark {
     background: linear-gradient(135deg, rgba(15, 20, 50, 0.95), rgba(5, 7, 18, 0.95));
     border: 2px solid #00d9ff;
@@ -241,13 +310,26 @@ body {
     border: 1px solid rgba(0, 217, 255, 0.2);
     border-radius: 4px;
     margin-bottom: 0.75rem;
-    cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .history-item:hover {
     background-color: rgba(0, 217, 255, 0.1);
     border-color: #00d9ff;
+}
+
+.history-content {
+    flex: 1;
+    cursor: pointer;
+}
+
+.history-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
 }
 
 .history-target {

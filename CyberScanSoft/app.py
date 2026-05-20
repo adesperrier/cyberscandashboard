@@ -15,6 +15,17 @@ app.config['JSON_AS_ASCII'] = False
 
 SCANS_DIR = os.path.join(os.path.dirname(__file__), 'scans')
 os.makedirs(SCANS_DIR, exist_ok=True)
+MAX_SCANS = 15
+
+def cleanup_old_scans():
+    """Keep only the MAX_SCANS most recent scans"""
+    try:
+        scans = sorted([f for f in os.listdir(SCANS_DIR) if f.endswith('.json')], reverse=True)
+        if len(scans) > MAX_SCANS:
+            for old_scan in scans[MAX_SCANS:]:
+                os.remove(os.path.join(SCANS_DIR, old_scan))
+    except Exception as e:
+        print(f"Cleanup error: {e}")
 
 VULNERABILITY_DB = {
     21: {'service': 'FTP', 'risk': 'HIGH', 'issues': ['Credentials in cleartext', 'Old protocol']},
@@ -77,6 +88,7 @@ def scan():
                         vuln_info = VULNERABILITY_DB.get(port_num, {})
 
                         results.append({
+                            'host': host,
                             'port': port_num,
                             'state': state,
                             'service': service,
@@ -104,6 +116,8 @@ def scan():
         with open(filepath, 'w') as f:
             json.dump(scan_result, f, indent=2, ensure_ascii=False)
 
+        cleanup_old_scans()
+
         return jsonify(scan_result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -112,7 +126,7 @@ def scan():
 def get_history():
     history = []
     try:
-        for filename in sorted(os.listdir(SCANS_DIR), reverse=True)[:10]:
+        for filename in sorted(os.listdir(SCANS_DIR), reverse=True)[:MAX_SCANS]:
             if filename.endswith('.json'):
                 filepath = os.path.join(SCANS_DIR, filename)
                 with open(filepath, 'r') as f:
@@ -127,9 +141,54 @@ def get_history():
         pass
     return jsonify(history)
 
+@app.route('/api/scan/<filename>', methods=['GET'])
+def get_scan_details(filename):
+    try:
+        filepath = os.path.join(SCANS_DIR, filename)
+        if not os.path.exists(filepath):
+            return jsonify({'error': 'Scan not found'}), 404
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+            return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/scan/<filename>', methods=['DELETE'])
+def delete_scan(filename):
+    try:
+        filepath = os.path.join(SCANS_DIR, filename)
+        if not os.path.exists(filepath):
+            return jsonify({'error': 'Scan not found'}), 404
+        os.remove(filepath)
+        return jsonify({'success': True, 'message': 'Scan deleted'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/status', methods=['GET'])
 def status():
     return jsonify({'status': 'online', 'version': '1.0.0'})
 
+def open_browser():
+    """Open the browser after a short delay to let Flask start"""
+    import time
+    import webbrowser
+    time.sleep(2)
+    try:
+        webbrowser.open('http://127.0.0.1:5000')
+    except Exception as e:
+        print(f"Could not open browser: {e}")
+
 if __name__ == '__main__':
-    app.run(debug=False, host='127.0.0.1', port=5000)
+    # Open browser in a separate thread
+    import threading
+    browser_thread = threading.Thread(target=open_browser, daemon=True)
+    browser_thread.start()
+    
+    print("\n" + "=" * 60)
+    print("CyberScan Dashboard - Starting...")
+    print("=" * 60)
+    print("\n🔍 Server running at: http://127.0.0.1:5000")
+    print("🌐 Browser opening automatically...")
+    print("\n✨ Press Ctrl+C to stop the server\n")
+    
+    app.run(debug=False, host='127.0.0.1', port=5000, use_reloader=False)
