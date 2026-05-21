@@ -11,24 +11,41 @@ from pathlib import Path
 def setup_nmap():
     """Setup Nmap path for PyInstaller bundle"""
     try:
+        nmap_paths = []
+
+        explicit_path = os.environ.get('NMAP_PATH', '').strip()
+        if explicit_path:
+            nmap_paths.append(Path(explicit_path))
+
+        nmap_dir = os.environ.get('NMAP_DIR', '').strip()
+        if nmap_dir:
+            nmap_paths.append(Path(nmap_dir) / 'nmap.exe')
+
         # Try to find nmap in common Windows locations
-        nmap_paths = [
+        nmap_paths.extend([
             Path(os.environ.get('PROGRAMFILES', 'C:\\Program Files')) / 'Nmap' / 'nmap.exe',
             Path(os.environ.get('PROGRAMFILES(X86)', 'C:\\Program Files (x86)')) / 'Nmap' / 'nmap.exe',
             Path('C:\\Nmap\\nmap.exe'),
-        ]
+        ])
+
+        if os.name == 'nt':
+            for folder in os.environ.get('PATH', '').split(os.pathsep):
+                folder = folder.strip('"')
+                if folder:
+                    nmap_paths.append(Path(folder) / 'nmap.exe')
         
         for nmap_path in nmap_paths:
             if nmap_path.exists():
                 os.environ['NMAP_PATH'] = str(nmap_path)
+                os.environ['PATH'] = str(nmap_path.parent) + os.pathsep + os.environ.get('PATH', '')
                 return str(nmap_path)
-        
-        # If Nmap not found, it might be in PATH
+
+        # If Nmap was not found, check whether Windows can still resolve it
         try:
             result = subprocess.run(['nmap', '--version'], capture_output=True)
             if result.returncode == 0:
                 return 'nmap'  # Use from PATH
-        except:
+        except Exception:
             pass
         
         return None

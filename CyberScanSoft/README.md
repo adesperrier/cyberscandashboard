@@ -123,6 +123,21 @@ setup.py cherche automatiquement le prochain port disponible (5000-9000)
 
 L'application marche sans Nmap mais le scan réseau ne fonctionne pas.
 
+### Chemin Nmap personnalisé
+Si Nmap n'est pas dans le `PATH`, CyberScan peut aussi le prendre via une variable d'environnement :
+
+```bash
+set NMAP_PATH=C:\Program Files (x86)\Nmap\nmap.exe
+```
+
+Ou en pointant le dossier :
+
+```bash
+set NMAP_DIR=C:\Program Files (x86)\Nmap
+```
+
+Le lanceur et l'application essaient ensuite ce chemin avant les emplacements Windows standards.
+
 ## 🔗 Ressources
 
 - GitHub: https://github.com/adesperrier/cyberscandashboard

@@ -17,6 +17,50 @@ SCANS_DIR = os.path.join(os.path.dirname(__file__), 'scans')
 os.makedirs(SCANS_DIR, exist_ok=True)
 MAX_SCANS = 15
 
+
+def resolve_nmap_search_path():
+    """Return a list of Nmap executable locations to try in order."""
+    search_paths = []
+
+    explicit_path = os.environ.get('NMAP_PATH', '').strip()
+    if explicit_path:
+        search_paths.append(explicit_path)
+
+    nmap_dir = os.environ.get('NMAP_DIR', '').strip()
+    if nmap_dir:
+        search_paths.append(os.path.join(nmap_dir, 'nmap.exe'))
+
+    search_paths.extend([
+        os.path.join(os.environ.get('PROGRAMFILES', r'C:\Program Files'), 'Nmap', 'nmap.exe'),
+        os.path.join(os.environ.get('PROGRAMFILES(X86)', r'C:\Program Files (x86)'), 'Nmap', 'nmap.exe'),
+        r'C:\Nmap\nmap.exe',
+    ])
+
+    if os.name == 'nt':
+        paths_value = os.environ.get('PATH', '')
+        for folder in paths_value.split(os.pathsep):
+            folder = folder.strip('"')
+            if folder:
+                search_paths.append(os.path.join(folder, 'nmap.exe'))
+
+    unique_paths = []
+    for candidate in search_paths:
+        if candidate and candidate not in unique_paths:
+            unique_paths.append(candidate)
+
+    return unique_paths
+
+
+def create_port_scanner():
+    """Create a PortScanner with an explicit Nmap executable search path."""
+    search_paths = resolve_nmap_search_path()
+
+    for candidate in search_paths:
+        if os.path.exists(candidate):
+            return nmap.PortScanner(nmap_search_path=[candidate])
+
+    return nmap.PortScanner(nmap_search_path=search_paths)
+
 def cleanup_old_scans():
     """Keep only the MAX_SCANS most recent scans"""
     try:
@@ -68,7 +112,7 @@ def scan():
         ports = port_ranges.get(mode, '1-100')
 
     try:
-        nm = nmap.PortScanner()
+        nm = create_port_scanner()
         scan_args = f'-sV -p {ports}'
         nm.scan(target, arguments=scan_args)
 
