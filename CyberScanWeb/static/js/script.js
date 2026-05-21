@@ -235,3 +235,53 @@ function initInstallationSection() {
 document.addEventListener('DOMContentLoaded', function() {
     initInstallationSection();
 });
+
+// ==================== CONTACT FORM ====================
+
+// Submit contact form
+function submitContact() {
+    const form = document.querySelector('.contact-form');
+    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+    
+    // Basic validation
+    let isValid = true;
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            isValid = false;
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    if (!isValid) {
+        alert('Veuillez remplir tous les champs obligatoires.');
+        return;
+    }
+    
+    // Collect form data
+    const formData = {
+        name: form.querySelector('input[type="text"]').value,
+        email: form.querySelector('input[type="email"]').value,
+        subject: form.querySelector('select').value,
+        message: form.querySelector('textarea').value
+    };
+    
+    // Show success message
+    const submitBtn = event.target;
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Message envoyé avec succès!';
+    submitBtn.classList.add('btn-success');
+    submitBtn.classList.remove('btn-primary-neon');
+    submitBtn.disabled = true;
+    
+    // Reset form after 2 seconds
+    setTimeout(() => {
+        form.reset();
+        submitBtn.innerHTML = originalText;
+        submitBtn.classList.remove('btn-success');
+        submitBtn.classList.add('btn-primary-neon');
+        submitBtn.disabled = false;
+        inputs.forEach(input => input.classList.remove('is-invalid'));
+    }, 2000);
+}

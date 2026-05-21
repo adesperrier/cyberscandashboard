@@ -26,7 +26,7 @@
                     <li class="nav-item"><a class="nav-link scroll-link" href="#architecture">Architecture</a></li>
                     <li class="nav-item"><a class="nav-link scroll-link" href="#technologies">Technologies</a></li>
                     <li class="nav-item"><a class="nav-link scroll-link" href="#installation">Installation</a></li>
-                    <li class="nav-item"><a class="nav-link scroll-link" href="#roadmap">Roadmap</a></li>
+                    <li class="nav-item"><a class="nav-link scroll-link" href="#contact">Support</a></li>
                     <li class="nav-item">
                         <a class="btn btn-sm btn-primary-neon" href="https://github.com/adesperrier/cyberscandashboard" target="_blank">
                             <i class="bi bi-github"></i> GitHub
@@ -692,6 +692,68 @@
                             <h5>PDF Reports</h5>
                             <p>Génération de rapports PDF professionnels et personnalisés</p>
                             <span class="roadmap-badge">Q3 2027</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SUPPORT ==================== -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="contact-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="bi bi-chat-left-dots"></i> Support Technique
+                        </h2>
+                        <p class="section-subtitle">Besoin d'aide avec CyberScan? Contactez notre équipe de support</p>
+                    </div>
+
+                    <div class="contact-card">
+                        <form class="contact-form">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control form-control-neon" placeholder="Votre nom" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control form-control-neon" placeholder="votre@email.com" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Sujet</label>
+                                <select class="form-select form-control-neon" required>
+                                    <option value="">Sélectionnez un sujet...</option>
+                                    <option value="bug">Signaler un bug</option>
+                                    <option value="crash">L'application plante</option>
+                                    <option value="feature">Demander une fonctionnalité</option>
+                                    <option value="installation">Problème d'installation</option>
+                                    <option value="scan">Problème de scan</option>
+                                    <option value="other">Autre</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Message</label>
+                                <textarea class="form-control form-control-neon" rows="5" placeholder="Décrivez votre problème en détail..." required></textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-primary-neon btn-lg" onclick="submitContact()">
+                                    <i class="bi bi-send"></i> Envoyer le message
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="contact-info mt-5 pt-4 border-top border-neon">
+                            <p class="small text-muted">
+                                <i class="bi bi-shield-check"></i> <strong>Confidentialité:</strong> Aucune donnée utilisateur n'est stockée. 
+                                Ce formulaire est fourni à titre informatif uniquement. Nous ne possédons pas de base de données.
+                            </p>
                         </div>
                     </div>
                 </div>

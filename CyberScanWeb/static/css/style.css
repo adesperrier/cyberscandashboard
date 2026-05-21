@@ -1326,3 +1326,74 @@ body {
     background: var(--secondary-neon);
     box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
 }
+
+/* ==================== CONTACT SECTION ==================== */
+.contact-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(0, 255, 136, 0.05) 100%);
+    border-top: 1px solid var(--border-neon);
+}
+
+.contact-header {
+    margin-bottom: 3rem;
+}
+
+.contact-card {
+    background: rgba(15, 20, 50, 0.5);
+    border: 2px solid var(--border-neon);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    border-color: var(--secondary-neon);
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+}
+
+.form-control-neon {
+    background-color: rgba(20, 25, 60, 0.8);
+    border: 1px solid var(--border-neon);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+.form-control-neon::placeholder {
+    color: var(--text-muted);
+}
+
+.form-control-neon:focus {
+    background-color: rgba(30, 35, 70, 0.95);
+    border-color: var(--secondary-neon);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+    color: var(--text-light);
+}
+
+.form-label {
+    color: var(--primary-neon);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.contact-form {
+    margin-bottom: 1rem;
+}
+
+.contact-info {
+    background: rgba(0, 217, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.contact-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.contact-info i {
+    color: var(--secondary-neon);
+    margin-right: 0.5rem;
+}
